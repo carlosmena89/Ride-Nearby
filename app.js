@@ -473,6 +473,7 @@
 
   const submitRouteSuggestion = async (event) => {
     event.preventDefault();
+    event.stopPropagation();
     if (!databaseConfigured || !turnstileSiteKey) {
       setSubmissionStatus('submissionNotConfigured', 'error');
       return;

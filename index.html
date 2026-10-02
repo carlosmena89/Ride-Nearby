@@ -122,7 +122,7 @@
             <summary><span data-i18n="suggestAction">Suggest a route</span><span class="summary-mark" aria-hidden="true">+</span></summary>
             <div class="suggest-form-wrap">
               <p class="form-status" id="submit-status" role="status" aria-live="polite" data-i18n="submissionNotConfigured">Suggestions are not enabled yet. Connect Supabase and anti-spam protection to accept them.</p>
-              <form id="route-submission-form">
+              <form id="route-submission-form" action="javascript:void(0)" onsubmit="return false">
                 <label class="form-field">
                   <span data-i18n="formNameLabel">Route name</span>
                   <input name="proposedName" type="text" minlength="3" maxlength="100" required autocomplete="off" placeholder="e.g. The old mountain road" data-i18n-placeholder="formNamePlaceholder">
