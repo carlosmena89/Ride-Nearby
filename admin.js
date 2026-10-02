@@ -5,7 +5,7 @@ const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
 const ADMIN_EMAIL = 'cjmena89@gmail.com';
 const authCard = document.querySelector('#auth-card');
 const dashboard = document.querySelector('#dashboard');
-const authForm = document.querySelector('#magic-link-form');
+const authForm = document.querySelector('#login-form');
 const authMessage = document.querySelector('#auth-message');
 const loginButton = document.querySelector('#login-button');
 const dashboardMessage = document.querySelector('#dashboard-message');
@@ -21,13 +21,6 @@ const setMessage = (element, message, type = '') => {
 const escapeSlug = (value) => value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const formatDate = (value) => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
 const formValue = (form, name) => form.elements[name].value.trim();
-
-const authHash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-if (authHash.get('error')) {
-  const description = authHash.get('error_description') || authHash.get('error');
-  setMessage(authMessage, decodeURIComponent(description.replace(/\+/g, ' ')), 'error');
-  window.history.replaceState({}, document.title, window.location.pathname);
-}
 
 const renderSubmission = (submission) => {
   const card = document.querySelector('#submission-template').content.firstElementChild.cloneNode(true);
