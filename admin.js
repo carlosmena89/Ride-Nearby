@@ -7,7 +7,7 @@ const authCard = document.querySelector('#auth-card');
 const dashboard = document.querySelector('#dashboard');
 const authForm = document.querySelector('#magic-link-form');
 const authMessage = document.querySelector('#auth-message');
-const magicLinkButton = document.querySelector('#magic-link-button');
+const loginButton = document.querySelector('#login-button');
 const dashboardMessage = document.querySelector('#dashboard-message');
 const list = document.querySelector('#submission-list');
 const empty = document.querySelector('#empty-dashboard');
@@ -125,31 +125,16 @@ const showDashboard = (session) => {
 
 authForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  if (magicLinkButton.disabled) return;
   const email = document.querySelector('#admin-email').value.trim().toLowerCase();
+  const password = document.querySelector('#admin-password').value;
   if (email !== ADMIN_EMAIL) {
     setMessage(authMessage, `Use the authorized admin email: ${ADMIN_EMAIL}`, 'error');
     return;
   }
-  const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` } });
-  if (error) {
-    const rateLimited = error.code === 'over_email_send_rate_limit' || error.status === 429 || error.message.toLowerCase().includes('rate limit');
-    setMessage(authMessage, rateLimited ? 'Please wait about 60 seconds before requesting another magic link.' : error.message, 'error');
-    return;
-  }
-  setMessage(authMessage, 'Magic link sent. Check your inbox and spam folder.', 'success');
-  magicLinkButton.disabled = true;
-  let seconds = 60;
-  const originalLabel = 'Send magic link';
-  const cooldown = window.setInterval(() => {
-    seconds -= 1;
-    magicLinkButton.firstChild.textContent = `${originalLabel} (${seconds}s) `;
-    if (seconds <= 0) {
-      window.clearInterval(cooldown);
-      magicLinkButton.disabled = false;
-      magicLinkButton.firstChild.textContent = `${originalLabel} `;
-    }
-  }, 1000);
+  loginButton.disabled = true;
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  loginButton.disabled = false;
+  setMessage(authMessage, error ? error.message : 'Signed in successfully.', error ? 'error' : 'success');
 });
 
 document.querySelector('#sign-out').addEventListener('click', async () => {

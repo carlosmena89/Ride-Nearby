@@ -1,24 +1,25 @@
 # Private admin dashboard
 
-The dashboard is `admin.html` and is not linked from the public app. It uses Supabase Auth magic links and accepts only `cjmena89@gmail.com` at the database function level.
+The dashboard is `admin.html` and is not linked from the public app. It uses Supabase Auth email/password login and accepts only `cjmena89@gmail.com` at the database function level. Supabase stores the password securely; it is never stored in this repository.
 
 ## Supabase setup
 
 1. Run `supabase/migrations/20261002030000_admin_dashboard.sql` in the linked Supabase project.
-2. In **Authentication → Providers**, make sure **Email** is enabled.
-3. In **Authentication → URL Configuration**, add the URL where `admin.html` will run, for example:
+2. In **Authentication → Providers**, make sure **Email** is enabled and password sign-in is allowed.
+3. In **Authentication → Users**, create or edit `cjmena89@gmail.com` and set a strong password.
+4. In **Authentication → URL Configuration**, add the URL where `admin.html` will run, for example:
 
    ```text
    http://localhost:8000/admin.html
    ```
 
-4. Serve the project locally:
+5. Serve the project locally:
 
    ```sh
    python3 -m http.server 8000
    ```
 
-5. Open <http://localhost:8000/admin.html> and request a magic link using `cjmena89@gmail.com`.
+6. Open <http://localhost:8000/admin.html> and sign in with `cjmena89@gmail.com` and the password created in Supabase.
 
 The Supabase RPCs enforce the email allowlist server-side. Hiding the page URL is not a security measure.
 
