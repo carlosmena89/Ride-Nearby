@@ -1,6 +1,6 @@
 # Ride Nearby
 
-![Motorcyclist riding a scenic mountain road](assets/motorcycle-route.jpeg)
+![Original Ride Nearby route illustration](assets/route-art.svg)
 
 *Ride Nearby — discover roads worth taking.*
 
@@ -13,7 +13,7 @@ A lightweight, mobile-first web app for discovering curated motorcycle loops nea
 - Opens the route stops in Google Maps for live directions.
 - Includes an English/Spanish language switch and remembers the selected language on the device.
 - Works as an installable PWA and caches its app shell for offline access.
-- Keeps location in memory in your browser; it is not stored or sent to a server.
+- Sends the selected location to Supabase only to calculate nearby routes; it is not stored by the application. See [`privacy.html`](privacy.html).
 - Includes a Supabase migration for a live route catalogue and a CAPTCHA-protected, moderation-first suggestion flow.
 
 ## Run locally
@@ -33,13 +33,13 @@ The app runs in demo mode until `supabase-config.js` contains the public Supabas
 1. Create a Supabase project and enable the PostGIS extension if it is not already enabled.
 2. Run `supabase/migrations/20261002000000_route_catalog.sql` in the Supabase SQL Editor.
 3. Create a Cloudflare Turnstile widget for the deployed site.
-4. Deploy `supabase/functions/submit-route/index.ts` with the Supabase CLI and set the server-side secret:
+4. Deploy `supabase/functions/submit-route/index.ts` with the Supabase CLI and set the server-side secrets:
 
    ```sh
-   supabase secrets set TURNSTILE_SECRET=your_turnstile_secret
+   supabase secrets set TURNSTILE_SECRET=your_turnstile_secret TURNSTILE_HOSTNAME=your-domain.example RATE_LIMIT_SALT=a-long-random-secret
    ```
 
-   `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are supplied by Supabase Edge Functions. Never place the service-role key in the browser.
+   `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are supplied by Supabase Edge Functions. Set `TURNSTILE_HOSTNAME` to the exact public hostname (for example `www.example.com`) and use a fresh random `RATE_LIMIT_SALT`. Never place these secrets or the service-role key in the browser.
 
 5. Copy the project URL, anon key, and Turnstile site key into `supabase-config.js`.
 6. Review pending submissions in Supabase, translate/validate them, then insert approved routes into `motorcycle_routes`.
@@ -50,7 +50,7 @@ The Google Routes API `TWO_WHEELER` mode remains deliberately unused for Spain: 
 
 ## Route data and sources
 
-Route ideas and stops are attributed to the linked editorial guides from **Motociclismo** and **RACC**. Starting-point coordinates are used only to sort nearby routes. Route distances and ride times are clearly marked as estimates; Google Maps calculates the live driving directions from the listed stops. The app does not claim that Google Maps provides a motorcycle-specific routing mode.
+Route descriptions, route notes and illustrations in this repository are original. External links are provided for further reading and verification, not as copied content. Starting-point coordinates are used to sort nearby routes. Route distances and ride times are estimates; Google Maps calculates live directions from the listed stops. The app does not claim that Google Maps provides a motorcycle-specific routing mode.
 
 The catalogue currently contains 20 published routes, including 7 in Catalonia. The original seed routes include:
 

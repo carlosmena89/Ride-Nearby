@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Original mountain road illustration</title>
+  <desc id="desc">A winding road crossing abstract mountain shapes.</desc>
+  <rect width="1200" height="700" fill="#e9e4d8"/>
+  <path fill="#b9c4b0" d="M0 430 240 180l160 140L650 70l210 230L1050 160l150 140v400H0Z"/>
+  <path fill="#7e9681" d="M0 520 230 330l150 110 210-180 190 170 170-125 250 170v225H0Z"/>
+  <path fill="none" stroke="#f4f3ed" stroke-width="42" stroke-linecap="round" d="M-20 650c220-140 270-10 420-130s170-260 350-190 210-65 470-230"/>
+  <path fill="none" stroke="#d36c45" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 28" d="M-20 650c220-140 270-10 420-130s170-260 350-190 210-65 470-230"/>
+  <circle cx="62" cy="625" r="13" fill="#d36c45"/><circle cx="1130" cy="115" r="13" fill="#d36c45"/>
+</svg>

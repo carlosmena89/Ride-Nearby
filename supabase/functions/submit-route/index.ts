@@ -20,7 +20,9 @@ Deno.serve(async (request) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const turnstileSecret = Deno.env.get("TURNSTILE_SECRET");
-  if (!supabaseUrl || !serviceRoleKey || !turnstileSecret) {
+  const turnstileHostname = Deno.env.get("TURNSTILE_HOSTNAME");
+  const rateLimitSalt = Deno.env.get("RATE_LIMIT_SALT");
+  if (!supabaseUrl || !serviceRoleKey || !turnstileSecret || !turnstileHostname || !rateLimitSalt) {
     return jsonResponse({ error: "Submission service is not configured." }, 503);
   }
 
@@ -69,7 +71,7 @@ Deno.serve(async (request) => {
   const forwardedFor = request.headers.get("cf-connecting-ip");
   if (forwardedFor) verificationBody.set("remoteip", forwardedFor);
 
-  let verification: { success?: boolean };
+  let verification: { success?: boolean; hostname?: string; action?: string };
   try {
     const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
@@ -80,11 +82,30 @@ Deno.serve(async (request) => {
   } catch {
     return jsonResponse({ error: "Could not verify the anti-spam check. Please try again." }, 502);
   }
-  if (!verification.success) return jsonResponse({ error: "The anti-spam check expired. Please try again." }, 400);
+  if (!verification.success || verification.hostname !== turnstileHostname || verification.action !== "submit-route") {
+    return jsonResponse({ error: "The anti-spam check could not be verified. Please try again." }, 400);
+  }
 
   const supabase = createClient(supabaseUrl, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
+  const clientIp = request.headers.get("cf-connecting-ip")?.trim()
+    || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (!clientIp) return jsonResponse({ error: "Could not identify the request source." }, 400);
+
+  const hashInput = new TextEncoder().encode(`${rateLimitSalt}:${clientIp}`);
+  const digest = await crypto.subtle.digest("SHA-256", hashInput);
+  const ipHash = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const { data: allowed, error: rateLimitError } = await supabase.rpc("consume_route_submission_rate_limit", {
+    p_ip_hash: ipHash,
+    p_max_requests: 5,
+  });
+  if (rateLimitError) {
+    console.error("Route suggestion rate-limit failed:", rateLimitError.message);
+    return jsonResponse({ error: "We could not accept suggestions right now. Please try again later." }, 503);
+  }
+  if (!allowed) return jsonResponse({ error: "Too many suggestions from this network. Please try again later." }, 429);
+
   const { error } = await supabase.from("route_submissions").insert({
     proposed_name: proposedName,
     start_name: startName,
