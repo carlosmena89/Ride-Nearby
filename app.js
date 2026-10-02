@@ -194,6 +194,7 @@
 
   const updateSubmissionStatus = () => {
     elements.submissionStatus.textContent = t(submissionStatusKey);
+    elements.submissionStatus.hidden = !submissionStatusState;
     elements.submissionStatus.classList.toggle('is-success', submissionStatusState === 'success');
     elements.submissionStatus.classList.toggle('is-error', submissionStatusState === 'error');
   };
@@ -434,6 +435,7 @@
       turnstileWidgetId = window.turnstile.render(elements.turnstileWidget, {
         sitekey: turnstileSiteKey,
         theme: 'light',
+        appearance: 'interaction-only',
         callback: (token) => {
           turnstileToken = token;
           elements.submissionButton.disabled = false;

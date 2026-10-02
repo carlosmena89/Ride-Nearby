@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ride-nearby-v3';
+const CACHE_NAME = 'ride-nearby-v4';
 const APP_SHELL = ['./', './index.html', './styles.css', './supabase-config.js', './routes.js', './app.js', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', (event) => {
