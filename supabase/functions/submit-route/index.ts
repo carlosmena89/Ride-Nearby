@@ -19,8 +19,7 @@ Deno.serve(async (request) => {
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const turnstileSecret = Deno.env.get("TURNSTILE_SECRET");
-  if (!supabaseUrl || !serviceRoleKey || !turnstileSecret) {
+  if (!supabaseUrl || !serviceRoleKey) {
     return jsonResponse({ error: "Submission service is not configured." }, 503);
   }
 
@@ -39,7 +38,10 @@ Deno.serve(async (request) => {
   const distanceKm = Number(body.distanceKm);
   const durationMinutes = Number(body.durationMinutes);
   const sourceUrl = cleanText(body.sourceUrl, 1000);
-  const turnstileToken = cleanText(body.turnstileToken, 2048);
+  const website = cleanText(body.website, 200);
+
+  // Simple honeypot for the no-account MVP. Real users never see or fill this field.
+  if (website) return jsonResponse({ error: "Invalid submission." }, 400);
 
   if (proposedName.length < 3 || startName.length < 2 || stops.length < 2) {
     return jsonResponse({ error: "Add a route name, starting point and at least two stops." }, 400);
@@ -60,28 +62,6 @@ Deno.serve(async (request) => {
       return jsonResponse({ error: "The source link must be a valid HTTPS URL." }, 400);
     }
   }
-  if (!turnstileToken) return jsonResponse({ error: "Complete the anti-spam check and try again." }, 400);
-
-  const verificationBody = new URLSearchParams({
-    secret: turnstileSecret,
-    response: turnstileToken,
-  });
-  const forwardedFor = request.headers.get("cf-connecting-ip");
-  if (forwardedFor) verificationBody.set("remoteip", forwardedFor);
-
-  let verification: { success?: boolean };
-  try {
-    const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: verificationBody,
-    });
-    verification = await response.json();
-  } catch {
-    return jsonResponse({ error: "Could not verify the anti-spam check. Please try again." }, 502);
-  }
-  if (!verification.success) return jsonResponse({ error: "The anti-spam check expired. Please try again." }, 400);
-
   const supabase = createClient(supabaseUrl, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
