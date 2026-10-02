@@ -12,27 +12,33 @@
   </head>
   <body>
     <header class="topbar">
-      <a class="brand" href="./" aria-label="Ride Nearby home">
+      <a class="brand" href="./" aria-label="Ride Nearby home" data-i18n-aria-label="brandHomeLabel">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 32 32" fill="none"><path d="M6 22.5 12 9l4.1 8.1 3.1-5.4L26 22.5"/><circle cx="6" cy="23" r="2"/><circle cx="26" cy="23" r="2"/><path d="M12 9h5"/></svg>
         </span>
-        <span>ride<span class="brand-light">nearby</span><small>CURATED RIDES</small></span>
+        <span>ride<span class="brand-light">nearby</span><small data-i18n="brandSubtitle">CURATED RIDES</small></span>
       </a>
-      <div class="topbar-note"><span class="live-dot"></span><span id="top-location">Spain · hand-picked routes</span></div>
+      <div class="topbar-actions">
+        <div class="topbar-note"><span class="live-dot"></span><span id="top-location" data-i18n="topLocationDefault">Spain · hand-picked routes</span></div>
+        <div class="language-switch" role="group" aria-label="Select language" data-i18n-aria-label="languageGroupLabel">
+          <button type="button" class="language-option is-active" data-language="en" aria-pressed="true" aria-label="Switch language to English" data-i18n-aria-label="switchToEnglish">EN</button>
+          <button type="button" class="language-option" data-language="es" aria-pressed="false" aria-label="Cambiar idioma a español" data-i18n-aria-label="switchToSpanish">ES</button>
+        </div>
+      </div>
     </header>
 
     <main>
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <div class="eyebrow"><span>01</span> THE LONG WAY IS THE RIGHT WAY</div>
-          <h1 id="hero-title">Good roads are<br><em>closer than you think.</em></h1>
-          <p>Find a ride worth taking. We bring together trusted motorcycle route guides and the roads they love.</p>
+          <div class="eyebrow"><span>01</span> <span data-i18n="heroEyebrow">THE LONG WAY IS THE RIGHT WAY</span></div>
+          <h1 id="hero-title"><span data-i18n="heroTitleLead">Good roads are</span><br><em data-i18n="heroTitleEm">closer than you think.</em></h1>
+          <p data-i18n="heroDescription">Find a ride worth taking. We bring together trusted motorcycle route guides and the roads they love.</p>
           <button class="location-button" id="locate-button" type="button">
             <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10Z"/><circle cx="10" cy="8" r="2"/></svg>
-            <span id="locate-label">Use my location</span>
+            <span id="locate-label" data-i18n="useLocation">Use my location</span>
             <span class="button-arrow" aria-hidden="true">↗</span>
           </button>
-          <p class="privacy-note"><span aria-hidden="true">⌁</span> Your location stays on this device.</p>
+          <p class="privacy-note"><span aria-hidden="true">⌁</span> <span data-i18n="privacyNote">Your location stays on this device.</span></p>
         </div>
 
         <div class="hero-art" aria-hidden="true">
@@ -44,9 +50,9 @@
             <circle class="route-point" cx="71" cy="277" r="7"/><circle class="route-point end" cx="499" cy="68" r="7"/>
             <circle class="route-ring" cx="71" cy="277" r="15"/><circle class="route-ring" cx="499" cy="68" r="15"/>
           </svg>
-          <div class="art-label label-start"><span>START HERE</span><b>Somewhere nearby</b></div>
-          <div class="art-label label-end"><span>TAKE THE SCENIC WAY</span><b>Make a day of it.</b></div>
-          <div class="art-stamp"><span>BUILT FOR</span><strong>THE<br>RIDE</strong><span>NOT THE RUSH</span></div>
+          <div class="art-label label-start"><span data-i18n="artStartLabel">START HERE</span><b data-i18n="artStartText">Somewhere nearby</b></div>
+          <div class="art-label label-end"><span data-i18n="artEndLabel">TAKE THE SCENIC WAY</span><b data-i18n="artEndText">Make a day of it.</b></div>
+          <div class="art-stamp"><span data-i18n="artStampTop">BUILT FOR</span><strong><span data-i18n="artStampLine1">THE</span><br><span data-i18n="artStampLine2">RIDE</span></strong><span data-i18n="artStampBottom">NOT THE RUSH</span></div>
           <span class="art-coord">40°25' N &nbsp; 3°42' W</span>
         </div>
       </section>
@@ -54,30 +60,30 @@
       <section class="finder" aria-labelledby="finder-title">
         <div class="finder-heading">
           <div>
-            <div class="eyebrow"><span>02</span> PICK YOUR PACE</div>
-            <h2 id="finder-title">Find your kind of ride</h2>
+            <div class="eyebrow"><span>02</span> <span data-i18n="finderEyebrow">PICK YOUR PACE</span></div>
+            <h2 id="finder-title" data-i18n="finderTitle">Find your kind of ride</h2>
           </div>
           <div class="location-status" id="location-status" role="status" aria-live="polite">
             <span class="status-icon" aria-hidden="true">◎</span>
-            <span id="status-copy">Share your location to see nearby routes</span>
+            <span id="status-copy" data-i18n="statusNeedLocation">Share your location to see nearby routes</span>
           </div>
         </div>
 
-        <div class="filters" aria-label="Route filters">
+        <div class="filters" aria-label="Route filters" data-i18n-aria-label="filtersLabel">
           <label class="filter-control">
-            <span class="filter-label">NEAR ME WITHIN <output id="radius-output" for="radius-filter">250 km</output></span>
-            <input id="radius-filter" type="range" min="50" max="500" step="50" value="250" aria-label="Maximum distance from my location">
+            <span class="filter-label"><span data-i18n="radiusLabel">NEAR ME WITHIN</span><output id="radius-output" for="radius-filter">250 km</output></span>
+            <input id="radius-filter" type="range" min="50" max="500" step="50" value="250" aria-label="Maximum distance from my location" data-i18n-aria-label="radiusAriaLabel">
             <span class="range-ends"><span>50 km</span><span>500 km</span></span>
           </label>
           <label class="filter-control">
-            <span class="filter-label">ROUTE DISTANCE UP TO <output id="distance-output" for="distance-filter">300 km</output></span>
-            <input id="distance-filter" type="range" min="50" max="500" step="25" value="300" aria-label="Maximum route distance">
+            <span class="filter-label"><span data-i18n="distanceLabel">ROUTE DISTANCE UP TO</span><output id="distance-output" for="distance-filter">300 km</output></span>
+            <input id="distance-filter" type="range" min="50" max="500" step="25" value="300" aria-label="Maximum route distance" data-i18n-aria-label="distanceAriaLabel">
             <span class="range-ends"><span>50 km</span><span>500 km</span></span>
           </label>
           <label class="filter-control">
-            <span class="filter-label">RIDE TIME UP TO <output id="time-output" for="time-filter">7 hours</output></span>
-            <input id="time-filter" type="range" min="1" max="10" step="1" value="7" aria-label="Maximum ride time">
-            <span class="range-ends"><span>1 hour</span><span>10 hours</span></span>
+            <span class="filter-label"><span data-i18n="timeLabel">RIDE TIME UP TO</span><output id="time-output" for="time-filter">7 hours</output></span>
+            <input id="time-filter" type="range" min="1" max="10" step="1" value="7" aria-label="Maximum ride time" data-i18n-aria-label="timeAriaLabel">
+            <span class="range-ends"><span data-i18n="oneHour">1 hour</span><span data-i18n="tenHours">10 hours</span></span>
           </label>
         </div>
       </section>
@@ -85,35 +91,35 @@
       <section class="results" aria-labelledby="results-title">
         <div class="results-heading">
           <div>
-            <div class="eyebrow"><span>03</span> THE GOOD STUFF</div>
-            <h2 id="results-title">Routes worth the detour <span id="route-count" class="count-badge">—</span></h2>
+            <div class="eyebrow"><span>03</span> <span data-i18n="resultsEyebrow">THE GOOD STUFF</span></div>
+            <h2 id="results-title"><span data-i18n="resultsTitle">Routes worth the detour</span> <span id="route-count" class="count-badge">—</span></h2>
           </div>
-          <span class="sort-note" id="sort-note">A few good roads, picked by people who ride.</span>
+          <span class="sort-note" id="sort-note" data-i18n="sortNoteDefault">A few good roads, picked by people who ride.</span>
         </div>
         <div class="route-grid" id="route-list" aria-live="polite">
           <div class="empty-state" id="empty-state">
             <span class="empty-icon" aria-hidden="true">↗</span>
-            <h3>First, tell us where you are.</h3>
-            <p>We’ll find the closest routes from our hand-picked collection. Your exact location never leaves your browser.</p>
-            <button class="text-button" type="button" data-locate>Use my location <span aria-hidden="true">→</span></button>
+            <h3 data-i18n="emptyNeedLocationTitle">First, tell us where you are.</h3>
+            <p data-i18n="emptyNeedLocationMessage">We’ll find the closest routes from our hand-picked collection. Your exact location never leaves your browser.</p>
+            <button class="text-button" type="button" data-locate><span data-i18n="useLocation">Use my location</span> <span aria-hidden="true">→</span></button>
           </div>
         </div>
       </section>
 
       <aside class="source-note">
         <div class="source-icon" aria-hidden="true">✳</div>
-        <div><strong>Picked from trusted ride guides.</strong><span>Our routes are based on published recommendations from established motorcycle and travel guides. Route distances and times are estimates; Google Maps calculates the live directions.</span></div>
-        <a href="https://www.motociclismo.es/rutas/rutas-moto-sierra-espana_181789_102.html" target="_blank" rel="noopener noreferrer">OUR SOURCES <span aria-hidden="true">↗</span></a>
+        <div><strong data-i18n="sourceTitle">Picked from trusted ride guides.</strong><span data-i18n="sourceDescription">Our routes are based on published recommendations from established motorcycle and travel guides. Route distances and times are estimates; Google Maps calculates the live directions.</span></div>
+        <a href="https://www.motociclismo.es/rutas/rutas-moto-sierra-espana_181789_102.html" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceLink">OUR SOURCES</span> <span aria-hidden="true">↗</span></a>
       </aside>
     </main>
 
     <footer class="footer">
-      <a class="brand footer-brand" href="./" aria-label="Ride Nearby home">
+      <a class="brand footer-brand" href="./" aria-label="Ride Nearby home" data-i18n-aria-label="brandHomeLabel">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M6 22.5 12 9l4.1 8.1 3.1-5.4L26 22.5"/><circle cx="6" cy="23" r="2"/><circle cx="26" cy="23" r="2"/><path d="M12 9h5"/></svg></span>
         <span>ride<span class="brand-light">nearby</span></span>
       </a>
-      <span>Made for the ride. &nbsp;·&nbsp; Ride safe, check road conditions.</span>
-      <span class="footer-country">SPAIN, FOR NOW&nbsp; <span>✳</span></span>
+        <span data-i18n="footerNote">Made for the ride. &nbsp;·&nbsp; Ride safe, check road conditions.</span>
+        <span class="footer-country"><span data-i18n="footerCountry">SPAIN, FOR NOW</span>&nbsp; <span>✳</span></span>
     </footer>
 
     <template id="route-card-template">
@@ -128,14 +134,14 @@
             <circle class="illustration-dot" cx="-3" cy="107" r="5"/><circle class="illustration-dot illustration-dot-end" cx="354" cy="8" r="5"/>
           </svg>
           <span class="route-number"></span>
-          <span class="route-tag">EDITOR’S PICK</span>
+          <span class="route-tag" data-i18n="editorPick">EDITOR’S PICK</span>
         </div>
         <div class="card-body">
           <div class="route-title-row"><h3 class="route-title"></h3><span class="difficulty"></span></div>
           <p class="route-description"></p>
           <div class="route-stops"><span class="stops-icon" aria-hidden="true">⌁</span><span class="stops-text"></span></div>
-          <div class="route-facts"><span><strong class="route-distance"></strong><small> DISTANCE</small></span><i></i><span><strong class="route-duration"></strong><small> RIDE TIME</small></span><i></i><span><strong class="route-start"></strong><small> START</small></span></div>
-          <div class="card-bottom"><a class="source-link" target="_blank" rel="noopener noreferrer">Source guide <span aria-hidden="true">↗</span></a><a class="maps-link" target="_blank" rel="noopener noreferrer">Open in Google Maps <span aria-hidden="true">↗</span></a></div>
+          <div class="route-facts"><span><strong class="route-distance"></strong><small data-i18n="factDistance">DISTANCE</small></span><i></i><span><strong class="route-duration"></strong><small data-i18n="factRideTime">RIDE TIME</small></span><i></i><span><strong class="route-start"></strong><small data-i18n="factStart">START</small></span></div>
+          <div class="card-bottom"><a class="source-link" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceGuide">Source guide</span> <span aria-hidden="true">↗</span></a><a class="maps-link" target="_blank" rel="noopener noreferrer"><span data-i18n="openMaps">Open in Google Maps</span> <span aria-hidden="true">↗</span></a></div>
         </div>
       </article>
     </template>

@@ -22,6 +22,11 @@ button, input { font: inherit; }
 a { color: inherit; }
 .topbar, main, .footer { width: min(1320px, calc(100% - 80px)); margin-inline: auto; }
 .topbar { height: 84px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.topbar-actions { display: flex; align-items: center; gap: 18px; }
+.language-switch { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 4px; background: #eeede6; }
+.language-option { min-width: 31px; height: 25px; padding: 0 6px; border: 0; border-radius: 2px; background: transparent; color: #7b8177; cursor: pointer; font: 9px var(--mono); transition: background .15s, color .15s; }
+.language-option:hover { color: var(--green); }
+.language-option.is-active { background: var(--green); color: #f7f7ef; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 17px; font-weight: 800; line-height: 1; letter-spacing: -.8px; text-decoration: none; }
 .brand-mark { width: 36px; height: 36px; border-radius: 50%; background: var(--green); display: grid; place-items: center; }
 .brand-mark svg { width: 23px; stroke: var(--lime); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -160,6 +165,8 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border: 2px s
   .topbar, main, .footer { width: calc(100% - 36px); }
   .topbar { height: 69px; }
   .topbar-note { font-size: 8px; }
+  .topbar-actions { gap: 0; }
+  .topbar-actions .topbar-note { display: none; }
   .brand { font-size: 15px; }
   .brand-mark { width: 32px; height: 32px; }
   .hero { min-height: auto; display: block; }

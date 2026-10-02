@@ -1,12 +1,13 @@
 # Ride Nearby
 
-A lightweight, mobile-first web app for discovering curated motorcycle loops near your current location in Spain. All UI and project documentation are in English.
+A lightweight, mobile-first web app for discovering curated motorcycle loops near your current location in Spain. The interface is available in English and Spanish (English by default).
 
 ## What it does
 
 - Asks for location only when you tap **Use my location**.
 - Ranks hand-picked routes by distance to their starting point and filters by nearby radius, route distance, and estimated ride time.
 - Opens the route stops in Google Maps for live directions.
+- Includes an English/Spanish language switch and remembers the selected language on the device.
 - Works as an installable PWA and caches its app shell for offline access.
 - Keeps location in memory in your browser; it is not stored or sent to a server.
 
