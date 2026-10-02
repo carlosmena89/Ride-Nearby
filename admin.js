@@ -1,7 +1,6 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
+(async () => {
 const config = window.RIDE_CONFIG || {};
-const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+const supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 const ADMIN_EMAIL = 'cjmena89@gmail.com';
 const authCard = document.querySelector('#auth-card');
 const dashboard = document.querySelector('#dashboard');
@@ -148,3 +147,4 @@ supabase.auth.onAuthStateChange((_event, session) => {
 
 const { data: { session } } = await supabase.auth.getSession();
 if (session) showDashboard(session);
+})();

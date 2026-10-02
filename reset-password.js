@@ -1,7 +1,6 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
+(async () => {
 const config = window.RIDE_CONFIG || {};
-const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+const supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 const form = document.querySelector('#reset-form');
 const message = document.querySelector('#reset-message');
 
@@ -56,3 +55,4 @@ form.addEventListener('submit', async (event) => {
   setMessage('Password saved. You can now sign in to the admin dashboard.', 'success');
   window.setTimeout(() => { window.location.href = './admin.html'; }, 1200);
 });
+})();
