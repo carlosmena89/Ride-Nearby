@@ -126,9 +126,13 @@ authForm.addEventListener('submit', async (event) => {
   setMessage(authMessage, 'Signing in…');
   loginButton.disabled = true;
   try {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setMessage(authMessage, error.message, 'error');
-    else setMessage(authMessage, 'Signed in successfully.', 'success');
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setMessage(authMessage, error.message, 'error');
+    } else {
+      setMessage(authMessage, 'Signed in successfully.', 'success');
+      showDashboard(data.session);
+    }
   } catch (error) {
     setMessage(authMessage, error instanceof Error ? error.message : 'Could not connect to Supabase.', 'error');
   } finally {
