@@ -48,13 +48,13 @@ The Google Routes API `TWO_WHEELER` mode remains deliberately unused for Spain: 
 
 Route ideas and stops are attributed to the linked editorial guides from **Motociclismo** and **RACC**. Starting-point coordinates are used only to sort nearby routes. Route distances and ride times are clearly marked as estimates; Google Maps calculates the live driving directions from the listed stops. The app does not claim that Google Maps provides a motorcycle-specific routing mode.
 
-The catalogue currently contains 15 published routes. The original seed routes include:
+The catalogue currently contains 20 published routes, including 7 in Catalonia. The original seed routes include:
 
 - Sierra de Aracena, Guadarrama mountain passes, and Sierra de Grazalema — [Motociclismo: motorcycle routes in Spain's mountains](https://www.motociclismo.es/rutas/rutas-moto-sierra-espana_181789_102.html)
 - Picos de Europa classic loop — [RACC: discover the Picos de Europa by motorcycle](https://www.racc.es/blog/moto/picos-de-europa-ruta-en-moto/)
 - Montserrat backroads — [Motociclismo: motorcycle routes in Catalonia](https://www.motociclismo.es/rutas/rutas-moto-cataluna-nzm_247884_102.html)
 
-The expanded catalogue also covers the Alpujarra, Cazorla, Cabo de Creus, Cabriel and Júcar, Rías Baixas, Rías Altas, Sierra de Gata, the Miño, Mallorca and Ribeira Sacra. The full expansion is reproducible from [`supabase/migrations/20261002010000_add_spain_route_catalog.sql`](supabase/migrations/20261002010000_add_spain_route_catalog.sql).
+The expanded catalogue also covers the Alpujarra, Cazorla, Cabo de Creus, Cabriel and Júcar, Rías Baixas, Rías Altas, Sierra de Gata, the Miño, Mallorca and Ribeira Sacra. The Catalonia additions cover inland Alt Empordà, La Garrotxa, Priorat/Montsant, Mont Caro and Vall d’Aran/Cerdanya. The expansions are reproducible from [`supabase/migrations/20261002010000_add_spain_route_catalog.sql`](supabase/migrations/20261002010000_add_spain_route_catalog.sql) and [`supabase/migrations/20261002020000_add_catalonia_routes.sql`](supabase/migrations/20261002020000_add_catalonia_routes.sql).
 
 Always check current road conditions, access restrictions, weather, and fuel availability before riding. Route access can change seasonally.
 
