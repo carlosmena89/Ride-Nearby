@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Ride Nearby · Admin</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./admin.css">
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header class="admin-header">
+        <a class="admin-brand" href="./"><img src="./icon.svg" alt=""> <span>ride<span>nearby</span></span></a>
+        <span class="admin-label">PRIVATE ROUTE REVIEW</span>
+      </header>
+
+      <section class="auth-card" id="auth-card">
+        <div class="section-kicker">ADMIN ACCESS</div>
+        <h1>Review community routes.</h1>
+        <p>Sign in with your email. We’ll send a one-time magic link; no password is stored here.</p>
+        <form id="magic-link-form">
+          <label for="admin-email">Admin email</label>
+          <div class="email-row"><input id="admin-email" type="email" value="cjmena89@gmail.com" required autocomplete="email"><button type="submit">Send magic link <span>↗</span></button></div>
+        </form>
+        <p class="form-message" id="auth-message" role="status"></p>
+      </section>
+
+      <section class="dashboard" id="dashboard" hidden>
+        <div class="dashboard-heading">
+          <div><div class="section-kicker">ROUTE CATALOGUE</div><h1>Pending suggestions <span id="pending-count">0</span></h1></div>
+          <button class="secondary-button" id="sign-out" type="button">Sign out</button>
+        </div>
+        <p class="form-message" id="dashboard-message" role="status"></p>
+        <div class="submission-list" id="submission-list"></div>
+        <div class="empty-dashboard" id="empty-dashboard" hidden><strong>No pending routes.</strong><span>New suggestions will appear here after submission.</span></div>
+      </section>
+    </main>
+
+    <template id="submission-template">
+      <article class="submission-card">
+        <div class="submission-top"><div><span class="submission-date"></span><h2 class="submission-title"></h2></div><span class="pending-pill">PENDING</span></div>
+        <div class="submission-grid">
+          <div><b>START</b><span class="submission-start"></span></div>
+          <div><b>DISTANCE</b><span class="submission-distance"></span></div>
+          <div><b>RIDE TIME</b><span class="submission-duration"></span></div>
+        </div>
+        <div class="submission-stops"><b>STOPS</b><span class="submission-stop-list"></span></div>
+        <p class="submission-reason"></p>
+        <a class="submission-source" target="_blank" rel="noopener noreferrer"></a>
+        <details class="publish-details">
+          <summary>Complete publication details <span>+</span></summary>
+          <form class="publish-form">
+            <div class="form-grid">
+              <label>English name<input name="name_en" required></label>
+              <label>Spanish name<input name="name_es" required></label>
+              <label>English region<input name="region_en" placeholder="e.g. GIRONA · CATALONIA" required></label>
+              <label>Spanish region<input name="region_es" placeholder="e.g. GIRONA · CATALUÑA" required></label>
+              <label>Latitude<input name="latitude" type="number" min="-90" max="90" step="any" required></label>
+              <label>Longitude<input name="longitude" type="number" min="-180" max="180" step="any" required></label>
+              <label>Difficulty<select name="difficulty_key"><option value="difficultyEasy">Easy-going</option><option value="difficultyTwisty" selected>Twisty</option><option value="difficultyMountain">Mountain ride</option></select></label>
+              <label>Slug<input name="slug" pattern="[a-z0-9-]+" required></label>
+              <label class="wide">English description<textarea name="description_en" rows="2" required></textarea></label>
+              <label class="wide">Spanish description<textarea name="description_es" rows="2" required></textarea></label>
+              <label>English source name<input name="source_name_en" value="Community suggestion"></label>
+              <label>Spanish source name<input name="source_name_es" value="Propuesta de la comunidad"></label>
+              <label class="wide">Source URL (HTTPS)<input name="source_url" type="url" required></label>
+            </div>
+            <div class="publish-actions"><button class="reject-button" data-action="reject" type="button">Reject</button><button class="approve-button" data-action="approve" type="submit">Approve and publish</button></div>
+            <p class="form-message publish-message" role="status"></p>
+          </form>
+        </details>
+      </article>
+    </template>
+    <script type="module" src="./admin.js"></script>
+  </body>
+</html>
