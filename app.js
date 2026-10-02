@@ -3,6 +3,7 @@
   const config = window.RIDE_CONFIG || {};
   const supabaseUrl = typeof config.supabaseUrl === 'string' ? config.supabaseUrl.replace(/\/$/, '') : '';
   const supabaseAnonKey = typeof config.supabaseAnonKey === 'string' ? config.supabaseAnonKey : '';
+  const turnstileSiteKey = typeof config.turnstileSiteKey === 'string' ? config.turnstileSiteKey : '';
   const databaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
   const translations = {
     en: {
@@ -120,7 +121,8 @@
     backendNoteCopy: document.querySelector('#backend-note-copy'),
     submissionForm: document.querySelector('#route-submission-form'),
     submissionStatus: document.querySelector('#submit-status'),
-    submissionButton: document.querySelector('#submit-route-button')
+    submissionButton: document.querySelector('#submit-route-button'),
+    turnstileWidget: document.querySelector('#turnstile-widget')
   };
 
   const readSavedLanguage = () => {
@@ -137,8 +139,11 @@
   let currentError = '';
   let isLocating = false;
   let routeRequestId = 0;
-  let submissionStatusKey = databaseConfigured ? '' : 'submissionNotConfigured';
+  let turnstileWidgetId = null;
+  let turnstileToken = '';
+  let submissionStatusKey = databaseConfigured && turnstileSiteKey ? 'submissionCaptchaLoading' : 'submissionNotConfigured';
   let submissionStatusState = '';
+  let submissionStatusMessage = '';
   let backendNoteKey = databaseConfigured ? '' : 'databaseDemo';
   const t = (key) => translations[language][key] || translations.en[key] || key;
 
@@ -189,15 +194,16 @@
   };
 
   const updateSubmissionStatus = () => {
-    elements.submissionStatus.textContent = t(submissionStatusKey);
+    elements.submissionStatus.textContent = submissionStatusMessage || t(submissionStatusKey);
     elements.submissionStatus.hidden = !submissionStatusState;
     elements.submissionStatus.classList.toggle('is-success', submissionStatusState === 'success');
     elements.submissionStatus.classList.toggle('is-error', submissionStatusState === 'error');
   };
 
-  const setSubmissionStatus = (key, state = '') => {
+  const setSubmissionStatus = (key, state = '', message = '') => {
     submissionStatusKey = key;
     submissionStatusState = state;
+    submissionStatusMessage = message;
     updateSubmissionStatus();
   };
 
@@ -420,8 +426,61 @@
     );
   }
 
+  const initializeTurnstile = () => {
+    if (!databaseConfigured || !turnstileSiteKey) return;
+
+    const renderWidget = () => {
+      if (!window.turnstile) {
+        setSubmissionStatus('submissionCaptchaError', 'error');
+        return;
+      }
+      turnstileWidgetId = window.turnstile.render(elements.turnstileWidget, {
+        sitekey: turnstileSiteKey,
+        theme: 'light',
+        appearance: 'interaction-only',
+        callback: (token) => {
+          turnstileToken = token;
+          elements.submissionButton.disabled = false;
+          setSubmissionStatus('submissionCaptchaReady');
+        },
+        'expired-callback': () => {
+          turnstileToken = '';
+          elements.submissionButton.disabled = true;
+          setSubmissionStatus('submissionNoCaptcha', 'error');
+        },
+        'error-callback': () => {
+          turnstileToken = '';
+          elements.submissionButton.disabled = true;
+          setSubmissionStatus('submissionCaptchaError', 'error');
+        }
+      });
+    };
+
+    setSubmissionStatus('submissionCaptchaLoading');
+    if (window.turnstile) {
+      renderWidget();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onload = renderWidget;
+    script.onerror = () => setSubmissionStatus('submissionCaptchaError', 'error');
+    document.head.append(script);
+  };
+
   const submitRouteSuggestion = async (event) => {
     event.preventDefault();
+    if (!databaseConfigured || !turnstileSiteKey) {
+      setSubmissionStatus('submissionNotConfigured', 'error');
+      return;
+    }
+    if (!turnstileToken) {
+      setSubmissionStatus('submissionNoCaptcha', 'error');
+      return;
+    }
 
     const formData = new FormData(elements.submissionForm);
     const stops = String(formData.get('stops') || '').split(/\r?\n/).map((stop) => stop.trim()).filter(Boolean);
@@ -444,16 +503,24 @@
           durationMinutes: Math.round(Number(formData.get('durationHours')) * 60),
           recommendationReason: formData.get('recommendationReason'),
           sourceUrl: formData.get('sourceUrl'),
-          website: formData.get('website')
+          turnstileToken
         })
       });
-      if (!response.ok) throw new Error(`Suggestion request failed (${response.status}).`);
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error || `Suggestion request failed (${response.status}).`);
+      }
 
       elements.submissionForm.reset();
+      turnstileToken = '';
+      window.turnstile.reset(turnstileWidgetId);
       setSubmissionStatus('submissionSuccess', 'success');
     } catch (error) {
       console.warn(error);
-      setSubmissionStatus('submissionFailure', 'error');
+      turnstileToken = '';
+      elements.submissionButton.disabled = true;
+      if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
+      setSubmissionStatus('submissionFailure', 'error', error instanceof Error ? error.message : t('submissionFailure'));
     }
   };
 
@@ -470,6 +537,7 @@
   document.querySelectorAll('[data-locate]').forEach((button) => button.addEventListener('click', locate));
   elements.submissionForm.addEventListener('submit', submitRouteSuggestion);
   applyTranslations();
+  initializeTurnstile();
 
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));

@@ -121,7 +121,7 @@
           <details class="suggest-panel" id="suggest-panel">
             <summary><span data-i18n="suggestAction">Suggest a route</span><span class="summary-mark" aria-hidden="true">+</span></summary>
             <div class="suggest-form-wrap">
-              <p class="form-status" id="submit-status" role="status" aria-live="polite"></p>
+              <p class="form-status" id="submit-status" role="status" aria-live="polite" data-i18n="submissionNotConfigured">Suggestions are not enabled yet. Connect Supabase and anti-spam protection to accept them.</p>
               <form id="route-submission-form">
                 <label class="form-field">
                   <span data-i18n="formNameLabel">Route name</span>
@@ -151,13 +151,10 @@
                   <span data-i18n="formSourceLabel">Source link (optional)</span>
                   <input name="sourceUrl" type="url" maxlength="1000" placeholder="https://…" data-i18n-placeholder="formSourcePlaceholder">
                 </label>
-                <label class="form-field trap-field" aria-hidden="true">
-                  <span>Website</span>
-                  <input name="website" type="text" tabindex="-1" autocomplete="off">
-                </label>
+                <div class="form-field-wide captcha-slot" id="turnstile-widget"></div>
                 <div class="form-actions form-field-wide">
                   <span data-i18n="proposalPrivacy">No account or email needed. Suggestions stay private until approved.</span>
-                  <button class="maps-link submit-button" id="submit-route-button" type="submit"><span data-i18n="formSubmit">Send for review</span> <span aria-hidden="true">↗</span></button>
+                  <button class="maps-link submit-button" id="submit-route-button" type="submit" disabled><span data-i18n="formSubmit">Send for review</span> <span aria-hidden="true">↗</span></button>
                 </div>
               </form>
             </div>

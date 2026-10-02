@@ -162,7 +162,7 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border: 2px s
 .form-field textarea { min-height: 75px; line-height: 1.5; }
 .form-field input::placeholder, .form-field textarea::placeholder { color: #a0a399; }
 .form-field input:focus, .form-field textarea:focus { border-color: #78926a; box-shadow: 0 0 0 2px #78926a24; }
-.trap-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.captcha-slot { min-height: 0; }
 .form-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .form-actions > span { color: #858a80; font-size: 8px; line-height: 1.5; }
 .submit-button { min-height: 36px; flex: 0 0 auto; border: 0; cursor: pointer; }

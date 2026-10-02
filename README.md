@@ -10,7 +10,7 @@ A lightweight, mobile-first web app for discovering curated motorcycle loops nea
 - Includes an English/Spanish language switch and remembers the selected language on the device.
 - Works as an installable PWA and caches its app shell for offline access.
 - Keeps location in memory in your browser; it is not stored or sent to a server.
-- Includes a Supabase migration for a live route catalogue and a moderation-first suggestion flow.
+- Includes a Supabase migration for a live route catalogue and a CAPTCHA-protected, moderation-first suggestion flow.
 
 ## Run locally
 
@@ -24,13 +24,21 @@ Then open <http://localhost:8000> on your computer or phone. To test from anothe
 
 ## Supabase live catalogue
 
-The app runs in demo mode until `supabase-config.js` contains the public Supabase URL and anonymous key. The browser only receives published routes. Route suggestions are sent to a Supabase Edge Function, checked with a hidden honeypot, and stored as `pending`; they are not publicly readable and must be reviewed before being copied into `motorcycle_routes`.
+The app runs in demo mode until `supabase-config.js` contains the public Supabase URL, anonymous key, and Cloudflare Turnstile site key. The browser only receives published routes. Route suggestions are sent to a Supabase Edge Function, checked with Turnstile, and stored as `pending`; they are not publicly readable and must be reviewed before being copied into `motorcycle_routes`.
 
 1. Create a Supabase project and enable the PostGIS extension if it is not already enabled.
 2. Run `supabase/migrations/20261002000000_route_catalog.sql` in the Supabase SQL Editor.
-3. Deploy `supabase/functions/submit-route/index.ts` with the Supabase CLI. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are supplied by Supabase Edge Functions; never place the service-role key in the browser.
-4. Copy the project URL and anon key into `supabase-config.js`.
-5. Review pending submissions in Supabase, translate/validate them, then insert approved routes into `motorcycle_routes`.
+3. Create a Cloudflare Turnstile widget for the deployed site.
+4. Deploy `supabase/functions/submit-route/index.ts` with the Supabase CLI and set the server-side secret:
+
+   ```sh
+   supabase secrets set TURNSTILE_SECRET=your_turnstile_secret
+   ```
+
+   `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are supplied by Supabase Edge Functions. Never place the service-role key in the browser.
+
+5. Copy the project URL, anon key, and Turnstile site key into `supabase-config.js`.
+6. Review pending submissions in Supabase, translate/validate them, then insert approved routes into `motorcycle_routes`.
 
 The Google Routes API `TWO_WHEELER` mode remains deliberately unused for Spain: Google’s current official coverage list does not include Spain, and Google requires a beta warning for displayed two-wheeler routes. Google Maps is still used as the hand-off for the final directions.
 
