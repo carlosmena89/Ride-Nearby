@@ -1,7 +1,7 @@
 {
   "name": "Ride Nearby — Curated Motorcycle Routes",
   "short_name": "Ride Nearby",
-  "description": "Find trusted motorcycle routes near you in Spain.",
+  "description": "Find original motorcycle route notes near you in Spain.",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
