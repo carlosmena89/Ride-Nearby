@@ -7,10 +7,17 @@ The dashboard is `admin.html` and is not linked from the public app. It uses Sup
 1. Run `supabase/migrations/20261002030000_admin_dashboard.sql` in the linked Supabase project.
 2. In **Authentication → Providers**, make sure **Email** is enabled and password sign-in is allowed.
 3. In **Authentication → Users**, create or edit `cjmena89@gmail.com` and set a strong password.
-4. In **Authentication → URL Configuration**, add the URL where `admin.html` will run, for example:
+4. In **Authentication → URL Configuration**, set the local **Site URL** to the port you are using, for example:
+
+   ```text
+   http://localhost:8000/reset-password.html
+   ```
+
+   Add both URLs to **Redirect URLs**:
 
    ```text
    http://localhost:8000/admin.html
+   http://localhost:8000/reset-password.html
    ```
 
 5. Serve the project locally:
@@ -19,7 +26,7 @@ The dashboard is `admin.html` and is not linked from the public app. It uses Sup
    python3 -m http.server 8000
    ```
 
-6. Open <http://localhost:8000/admin.html> and sign in with `cjmena89@gmail.com` and the password created in Supabase.
+6. Open <http://localhost:8000/admin.html> and sign in with `cjmena89@gmail.com` and the password created in Supabase. Password recovery links open `reset-password.html`, where a new password can be saved.
 
 The Supabase RPCs enforce the email allowlist server-side. Hiding the page URL is not a security measure.
 
