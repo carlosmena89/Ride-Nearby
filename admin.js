@@ -7,6 +7,7 @@ const authCard = document.querySelector('#auth-card');
 const dashboard = document.querySelector('#dashboard');
 const authForm = document.querySelector('#magic-link-form');
 const authMessage = document.querySelector('#auth-message');
+const magicLinkButton = document.querySelector('#magic-link-button');
 const dashboardMessage = document.querySelector('#dashboard-message');
 const list = document.querySelector('#submission-list');
 const empty = document.querySelector('#empty-dashboard');
@@ -20,6 +21,13 @@ const setMessage = (element, message, type = '') => {
 const escapeSlug = (value) => value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const formatDate = (value) => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
 const formValue = (form, name) => form.elements[name].value.trim();
+
+const authHash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+if (authHash.get('error')) {
+  const description = authHash.get('error_description') || authHash.get('error');
+  setMessage(authMessage, decodeURIComponent(description.replace(/\+/g, ' ')), 'error');
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
 
 const renderSubmission = (submission) => {
   const card = document.querySelector('#submission-template').content.firstElementChild.cloneNode(true);
@@ -117,13 +125,31 @@ const showDashboard = (session) => {
 
 authForm.addEventListener('submit', async (event) => {
   event.preventDefault();
+  if (magicLinkButton.disabled) return;
   const email = document.querySelector('#admin-email').value.trim().toLowerCase();
   if (email !== ADMIN_EMAIL) {
     setMessage(authMessage, `Use the authorized admin email: ${ADMIN_EMAIL}`, 'error');
     return;
   }
   const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` } });
-  setMessage(authMessage, error ? error.message : 'Magic link sent. Check your inbox.', error ? 'error' : 'success');
+  if (error) {
+    const rateLimited = error.code === 'over_email_send_rate_limit' || error.status === 429 || error.message.toLowerCase().includes('rate limit');
+    setMessage(authMessage, rateLimited ? 'Please wait about 60 seconds before requesting another magic link.' : error.message, 'error');
+    return;
+  }
+  setMessage(authMessage, 'Magic link sent. Check your inbox and spam folder.', 'success');
+  magicLinkButton.disabled = true;
+  let seconds = 60;
+  const originalLabel = 'Send magic link';
+  const cooldown = window.setInterval(() => {
+    seconds -= 1;
+    magicLinkButton.firstChild.textContent = `${originalLabel} (${seconds}s) `;
+    if (seconds <= 0) {
+      window.clearInterval(cooldown);
+      magicLinkButton.disabled = false;
+      magicLinkButton.firstChild.textContent = `${originalLabel} `;
+    }
+  }, 1000);
 });
 
 document.querySelector('#sign-out').addEventListener('click', async () => {
