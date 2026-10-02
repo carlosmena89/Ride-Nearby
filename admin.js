@@ -124,10 +124,17 @@ authForm.addEventListener('submit', async (event) => {
     setMessage(authMessage, `Use the authorized admin email: ${ADMIN_EMAIL}`, 'error');
     return;
   }
+  setMessage(authMessage, 'Signing in…');
   loginButton.disabled = true;
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  loginButton.disabled = false;
-  setMessage(authMessage, error ? error.message : 'Signed in successfully.', error ? 'error' : 'success');
+  try {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setMessage(authMessage, error.message, 'error');
+    else setMessage(authMessage, 'Signed in successfully.', 'success');
+  } catch (error) {
+    setMessage(authMessage, error instanceof Error ? error.message : 'Could not connect to Supabase.', 'error');
+  } finally {
+    loginButton.disabled = false;
+  }
 });
 
 document.querySelector('#sign-out').addEventListener('click', async () => {

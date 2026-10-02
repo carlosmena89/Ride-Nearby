@@ -72,6 +72,22 @@
         </details>
       </article>
     </template>
+    <script>
+      window.addEventListener('error', () => {
+        const message = document.querySelector('#auth-message');
+        if (message && !message.textContent) {
+          message.textContent = 'The dashboard script could not load. Check your connection and reload this page.';
+          message.className = 'form-message error';
+        }
+      });
+      window.addEventListener('unhandledrejection', () => {
+        const message = document.querySelector('#auth-message');
+        if (message && !message.textContent) {
+          message.textContent = 'The dashboard could not connect to Supabase. Check your connection and reload this page.';
+          message.className = 'form-message error';
+        }
+      });
+    </script>
     <script type="module" src="./admin.js"></script>
   </body>
 </html>
