@@ -106,6 +106,62 @@
         </div>
       </section>
 
+      <aside class="backend-note" id="backend-note" role="status" aria-live="polite">
+        <span class="backend-note-icon" aria-hidden="true">i</span>
+        <span id="backend-note-copy" data-i18n="databaseDemo">Demo mode: showing the sample routes. Connect Supabase to load the live catalogue and receive suggestions.</span>
+      </aside>
+
+      <section class="suggest-section" aria-labelledby="suggest-title">
+        <div class="suggest-heading">
+          <div>
+            <div class="eyebrow"><span>04</span> <span data-i18n="suggestEyebrow">COMMUNITY ROADS</span></div>
+            <h2 id="suggest-title" data-i18n="suggestTitle">Know a road worth sharing?</h2>
+            <p data-i18n="suggestDescription">Suggest a route for other riders. We’ll review it before it joins the catalogue.</p>
+          </div>
+          <details class="suggest-panel" id="suggest-panel">
+            <summary><span data-i18n="suggestAction">Suggest a route</span><span class="summary-mark" aria-hidden="true">+</span></summary>
+            <div class="suggest-form-wrap">
+              <p class="form-status" id="submit-status" role="status" aria-live="polite" data-i18n="submissionNotConfigured">Suggestions are not enabled yet. Connect Supabase and anti-spam protection to accept them.</p>
+              <form id="route-submission-form">
+                <label class="form-field">
+                  <span data-i18n="formNameLabel">Route name</span>
+                  <input name="proposedName" type="text" minlength="3" maxlength="100" required autocomplete="off" placeholder="e.g. The old mountain road" data-i18n-placeholder="formNamePlaceholder">
+                </label>
+                <label class="form-field">
+                  <span data-i18n="formStartLabel">Starting town</span>
+                  <input name="startName" type="text" minlength="2" maxlength="120" required autocomplete="off" placeholder="e.g. Ronda" data-i18n-placeholder="formStartPlaceholder">
+                </label>
+                <label class="form-field form-field-wide">
+                  <span data-i18n="formStopsLabel">Stops, in order</span>
+                  <textarea name="stops" rows="4" required placeholder="One place per line. Repeat the start at the end for a loop." data-i18n-placeholder="formStopsPlaceholder"></textarea>
+                </label>
+                <label class="form-field">
+                  <span data-i18n="formDistanceLabel">Approx. distance (km)</span>
+                  <input name="distanceKm" type="number" min="1" max="2000" step="1" required placeholder="120" data-i18n-placeholder="formDistancePlaceholder">
+                </label>
+                <label class="form-field">
+                  <span data-i18n="formDurationLabel">Approx. ride time (hours)</span>
+                  <input name="durationHours" type="number" min="0.5" max="48" step="0.5" required placeholder="3" data-i18n-placeholder="formDurationPlaceholder">
+                </label>
+                <label class="form-field form-field-wide">
+                  <span data-i18n="formReasonLabel">Why do you recommend it?</span>
+                  <textarea name="recommendationReason" rows="3" minlength="20" maxlength="1500" required placeholder="Tell us what makes this ride special…" data-i18n-placeholder="formReasonPlaceholder"></textarea>
+                </label>
+                <label class="form-field form-field-wide">
+                  <span data-i18n="formSourceLabel">Source link (optional)</span>
+                  <input name="sourceUrl" type="url" maxlength="1000" placeholder="https://…" data-i18n-placeholder="formSourcePlaceholder">
+                </label>
+                <div class="form-field-wide captcha-slot" id="turnstile-widget"></div>
+                <div class="form-actions form-field-wide">
+                  <span data-i18n="proposalPrivacy">No account or email needed. Suggestions stay private until approved.</span>
+                  <button class="maps-link submit-button" id="submit-route-button" type="submit" disabled><span data-i18n="formSubmit">Send for review</span> <span aria-hidden="true">↗</span></button>
+                </div>
+              </form>
+            </div>
+          </details>
+        </div>
+      </section>
+
       <aside class="source-note">
         <div class="source-icon" aria-hidden="true">✳</div>
         <div><strong data-i18n="sourceTitle">Picked from trusted ride guides.</strong><span data-i18n="sourceDescription">Our routes are based on published recommendations from established motorcycle and travel guides. Route distances and times are estimates; Google Maps calculates the live directions.</span></div>
@@ -146,6 +202,7 @@
       </article>
     </template>
 
+    <script src="./supabase-config.js" defer></script>
     <script src="./routes.js" defer></script>
     <script src="./app.js" defer></script>
   </body>

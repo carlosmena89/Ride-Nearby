@@ -1,0 +1,4 @@
+project_id = "ride-nearby"
+
+[functions.submit-route]
+verify_jwt = false

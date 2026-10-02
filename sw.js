@@ -1,5 +1,5 @@
-const CACHE_NAME = 'ride-nearby-v2';
-const APP_SHELL = ['./', './index.html', './styles.css', './routes.js', './app.js', './manifest.webmanifest', './icon.svg'];
+const CACHE_NAME = 'ride-nearby-v3';
+const APP_SHELL = ['./', './index.html', './styles.css', './supabase-config.js', './routes.js', './app.js', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));

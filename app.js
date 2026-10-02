@@ -1,5 +1,10 @@
 (() => {
-  const routes = window.RIDE_ROUTES || [];
+  const seedRoutes = window.RIDE_ROUTES || [];
+  const config = window.RIDE_CONFIG || {};
+  const supabaseUrl = typeof config.supabaseUrl === 'string' ? config.supabaseUrl.replace(/\/$/, '') : '';
+  const supabaseAnonKey = typeof config.supabaseAnonKey === 'string' ? config.supabaseAnonKey : '';
+  const turnstileSiteKey = typeof config.turnstileSiteKey === 'string' ? config.turnstileSiteKey : '';
+  const databaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
   const translations = {
     en: {
       pageTitle: 'Ride Nearby — Curated motorcycle routes',
@@ -31,7 +36,24 @@
       factDistance: 'DISTANCE', factRideTime: 'RIDE TIME', factStart: 'START', sourceGuide: 'Source guide', openMaps: 'Open in Google Maps',
       nearbyAway: '{distance} km away', readSourceGuide: 'Read source guide: {source}', openRouteMaps: 'Open {route} in Google Maps',
       hoursOne: 'hour', hoursMany: 'hours', durationHourShort: 'hr', durationMinute: 'min',
-      difficultyEasy: 'Easy-going', difficultyTwisty: 'Twisty', difficultyMountain: 'Mountain ride'
+      difficultyEasy: 'Easy-going', difficultyTwisty: 'Twisty', difficultyMountain: 'Mountain ride',
+      databaseDemo: 'Demo mode: showing 5 sample routes. Configure Supabase to load the live catalogue and accept rider suggestions.',
+      databaseConnectionIssue: 'Could not load the live route catalogue. Check the Supabase settings and try again.',
+      databaseRetryMessage: 'Check that the Supabase migration is installed and the project settings are correct.',
+      suggestEyebrow: 'COMMUNITY ROADS', suggestTitle: 'Know a road worth sharing?',
+      suggestDescription: 'Suggest a route for other riders. We’ll review it before it joins the catalogue.', suggestAction: 'Suggest a route',
+      submissionNotConfigured: 'Suggestions are not enabled yet. Connect Supabase and anti-spam protection to accept them.',
+      submissionCaptchaLoading: 'Loading the anti-spam check…', submissionCaptchaReady: 'Complete the anti-spam check to send your suggestion.',
+      submissionCaptchaError: 'The anti-spam check could not load. Please try again later.', submissionNoCaptcha: 'Complete the anti-spam check before sending.',
+      submissionSending: 'Sending your suggestion for review…', submissionSuccess: 'Thanks! Your suggestion is in the review queue. It will not appear publicly until approved.',
+      submissionFailure: 'We could not send your suggestion. Please try again later.', proposalPrivacy: 'No account or email needed. Suggestions stay private until approved.',
+      formNameLabel: 'Route name', formNamePlaceholder: 'e.g. The old mountain road',
+      formStartLabel: 'Starting town', formStartPlaceholder: 'e.g. Ronda',
+      formStopsLabel: 'Stops, in order', formStopsPlaceholder: 'One place per line. Repeat the start at the end for a loop.',
+      formDistanceLabel: 'Approx. distance (km)', formDistancePlaceholder: '120',
+      formDurationLabel: 'Approx. ride time (hours)', formDurationPlaceholder: '3',
+      formReasonLabel: 'Why do you recommend it?', formReasonPlaceholder: 'Tell us what makes this ride special…',
+      formSourceLabel: 'Source link (optional)', formSourcePlaceholder: 'https://…', formSubmit: 'Send for review'
     },
     es: {
       pageTitle: 'Ride Nearby — Rutas moteras seleccionadas',
@@ -63,7 +85,24 @@
       factDistance: 'DISTANCIA', factRideTime: 'DURACIÓN', factStart: 'SALIDA', sourceGuide: 'Guía de origen', openMaps: 'Abrir en Google Maps',
       nearbyAway: 'a {distance} km', readSourceGuide: 'Leer la guía de origen: {source}', openRouteMaps: 'Abrir {route} en Google Maps',
       hoursOne: 'hora', hoursMany: 'horas', durationHourShort: 'h', durationMinute: 'min',
-      difficultyEasy: 'Tranquila', difficultyTwisty: 'Con curvas', difficultyMountain: 'De montaña'
+      difficultyEasy: 'Tranquila', difficultyTwisty: 'Con curvas', difficultyMountain: 'De montaña',
+      databaseDemo: 'Modo de prueba: mostramos 5 rutas de ejemplo. Conecta Supabase para cargar el catálogo y recibir propuestas.',
+      databaseConnectionIssue: 'No se pudo cargar el catálogo. Revisa la configuración de Supabase e inténtalo de nuevo.',
+      databaseRetryMessage: 'Comprueba que la migración está instalada y que los datos del proyecto son correctos.',
+      suggestEyebrow: 'RUTAS DE LA COMUNIDAD', suggestTitle: '¿Conoces una ruta que merezca la pena?',
+      suggestDescription: 'Propón una ruta para otros motoristas. La revisaremos antes de añadirla al catálogo.', suggestAction: 'Proponer una ruta',
+      submissionNotConfigured: 'Aún no se pueden enviar propuestas. Hay que conectar Supabase y activar la protección antispam.',
+      submissionCaptchaLoading: 'Cargando la comprobación antispam…', submissionCaptchaReady: 'Completa la comprobación antispam para enviar la propuesta.',
+      submissionCaptchaError: 'No se pudo cargar la comprobación antispam. Inténtalo más tarde.', submissionNoCaptcha: 'Completa la comprobación antispam antes de enviar.',
+      submissionSending: 'Enviando la propuesta para revisión…', submissionSuccess: '¡Gracias! La propuesta queda pendiente de revisión y no será pública hasta que se apruebe.',
+      submissionFailure: 'No se pudo enviar la propuesta. Inténtalo de nuevo más tarde.', proposalPrivacy: 'No necesitas cuenta ni correo. Las propuestas son privadas hasta que se aprueban.',
+      formNameLabel: 'Nombre de la ruta', formNamePlaceholder: 'p. ej., La carretera antigua de montaña',
+      formStartLabel: 'Localidad de salida', formStartPlaceholder: 'p. ej., Ronda',
+      formStopsLabel: 'Paradas, en orden', formStopsPlaceholder: 'Una localidad por línea. Repite la salida al final para indicar que es circular.',
+      formDistanceLabel: 'Distancia aprox. (km)', formDistancePlaceholder: '120',
+      formDurationLabel: 'Duración aprox. (horas)', formDurationPlaceholder: '3',
+      formReasonLabel: '¿Por qué la recomiendas?', formReasonPlaceholder: 'Cuéntanos qué tiene de especial esta ruta…',
+      formSourceLabel: 'Enlace a la fuente (opcional)', formSourcePlaceholder: 'https://…', formSubmit: 'Enviar para revisión'
     }
   };
 
@@ -77,7 +116,13 @@
     emptyState: document.querySelector('#empty-state'),
     radius: document.querySelector('#radius-filter'),
     distance: document.querySelector('#distance-filter'),
-    time: document.querySelector('#time-filter')
+    time: document.querySelector('#time-filter'),
+    backendNote: document.querySelector('#backend-note'),
+    backendNoteCopy: document.querySelector('#backend-note-copy'),
+    submissionForm: document.querySelector('#route-submission-form'),
+    submissionStatus: document.querySelector('#submit-status'),
+    submissionButton: document.querySelector('#submit-route-button'),
+    turnstileWidget: document.querySelector('#turnstile-widget')
   };
 
   const readSavedLanguage = () => {
@@ -93,6 +138,12 @@
   let riderLocation = null;
   let currentError = '';
   let isLocating = false;
+  let routeRequestId = 0;
+  let turnstileWidgetId = null;
+  let turnstileToken = '';
+  let submissionStatusKey = databaseConfigured && turnstileSiteKey ? 'submissionCaptchaLoading' : 'submissionNotConfigured';
+  let submissionStatusState = '';
+  let backendNoteKey = databaseConfigured ? '' : 'databaseDemo';
   const t = (key) => translations[language][key] || translations.en[key] || key;
 
   const formatHours = (hours) => {
@@ -136,6 +187,23 @@
     document.querySelector('#sort-note').textContent = t(riderLocation ? 'sortNoteSorted' : 'sortNoteDefault');
   };
 
+  const updateBackendNote = () => {
+    elements.backendNote.hidden = !backendNoteKey;
+    elements.backendNoteCopy.textContent = backendNoteKey ? t(backendNoteKey) : '';
+  };
+
+  const updateSubmissionStatus = () => {
+    elements.submissionStatus.textContent = t(submissionStatusKey);
+    elements.submissionStatus.classList.toggle('is-success', submissionStatusState === 'success');
+    elements.submissionStatus.classList.toggle('is-error', submissionStatusState === 'error');
+  };
+
+  const setSubmissionStatus = (key, state = '') => {
+    submissionStatusKey = key;
+    submissionStatusState = state;
+    updateSubmissionStatus();
+  };
+
   const applyTranslations = () => {
     document.documentElement.lang = language;
     document.title = t('pageTitle');
@@ -146,6 +214,9 @@
     document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
       element.setAttribute('aria-label', t(element.dataset.i18nAriaLabel));
     });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+      element.setAttribute('placeholder', t(element.dataset.i18nPlaceholder));
+    });
     document.querySelectorAll('[data-language]').forEach((button) => {
       const active = button.dataset.language === language;
       button.classList.toggle('is-active', active);
@@ -153,6 +224,8 @@
     });
     updateFilterLabels();
     updateLocationText();
+    updateBackendNote();
+    updateSubmissionStatus();
   };
 
   const setLanguage = (nextLanguage) => {
@@ -183,7 +256,7 @@
     const card = template.content.firstElementChild.cloneNode(true);
     card.querySelector('.route-region').textContent = language === 'es' ? route.regionEs : route.region;
     card.querySelector('.route-nearby').textContent = t('nearbyAway').replace('{distance}', Math.round(awayKm));
-    card.querySelector('.route-number').textContent = route.number;
+    card.querySelector('.route-number').textContent = route.number || String(index + 1).padStart(2, '0');
     card.querySelector('.route-title').textContent = language === 'es' ? route.titleEs : route.title;
     card.querySelector('.difficulty').textContent = t(route.difficultyKey);
     card.querySelector('.route-description').textContent = language === 'es' ? route.descriptionEs : route.description;
@@ -201,7 +274,7 @@
     return card;
   };
 
-  const showEmpty = (title, message, action, isError = false) => {
+  const showEmpty = (title, message, action, isError = false, onAction = locate) => {
     elements.routeList.replaceChildren();
     const empty = elements.emptyState.cloneNode(true);
     empty.classList.toggle('is-error', isError);
@@ -209,12 +282,79 @@
     empty.querySelector('p').textContent = message;
     const button = empty.querySelector('[data-locate]');
     button.innerHTML = `${action} <span aria-hidden="true">→</span>`;
-    button.addEventListener('click', locate);
+    button.addEventListener('click', onAction);
     elements.routeList.append(empty);
     elements.routeCount.textContent = '0';
   };
 
-  const renderRoutes = () => {
+  const showRoutes = (nearbyRoutes, requestId) => {
+    if (requestId !== routeRequestId) return;
+    elements.routeCount.textContent = String(nearbyRoutes.length);
+    elements.routeList.replaceChildren();
+    if (!nearbyRoutes.length) {
+      showEmpty(
+        t('noRoutesTitle'),
+        t('noRoutesMessage'),
+        t('showNearbyRoutes'),
+        false,
+        () => {
+          elements.radius.value = elements.radius.max;
+          elements.distance.value = elements.distance.max;
+          elements.time.value = elements.time.max;
+          updateFilterLabels();
+          renderRoutes();
+        }
+      );
+      return;
+    }
+    nearbyRoutes.forEach(({ route, awayKm }, index) => elements.routeList.append(makeCard(route, index, awayKm)));
+  };
+
+  const mapDatabaseRoute = (row) => ({
+    id: row.slug,
+    number: '',
+    title: row.name_en,
+    titleEs: row.name_es,
+    region: row.region_en,
+    regionEs: row.region_es,
+    start: row.start_name,
+    coordinates: [Number(row.start_latitude), Number(row.start_longitude)],
+    stops: row.stops,
+    distanceKm: Number(row.distance_km),
+    durationHours: Number(row.duration_minutes) / 60,
+    difficultyKey: row.difficulty_key,
+    description: row.description_en,
+    descriptionEs: row.description_es,
+    sourceName: row.source_name_en,
+    sourceNameEs: row.source_name_es,
+    sourceUrl: row.source_url,
+    awayKm: Number(row.distance_from_user_km)
+  });
+
+  const loadDatabaseRoutes = async () => {
+    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/find_nearby_motorcycle_routes`, {
+      method: 'POST',
+      headers: {
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${supabaseAnonKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        p_latitude: riderLocation[0],
+        p_longitude: riderLocation[1],
+        p_radius_km: Number(elements.radius.value),
+        p_max_distance_km: Number(elements.distance.value),
+        p_max_duration_minutes: Number(elements.time.value) * 60,
+        p_limit: 50
+      })
+    });
+    if (!response.ok) throw new Error(`Supabase route query failed (${response.status}).`);
+    const rows = await response.json();
+    return rows.map(mapDatabaseRoute).map((route) => ({ route, awayKm: route.awayKm }));
+  };
+
+  const renderRoutes = async () => {
+    const requestId = ++routeRequestId;
     if (!riderLocation) {
       showEmpty(
         currentError ? t('locationUnavailableTitle') : t('emptyNeedLocationTitle'),
@@ -225,26 +365,32 @@
       return;
     }
 
+    if (databaseConfigured) {
+      try {
+        const databaseRoutes = await loadDatabaseRoutes();
+        if (requestId !== routeRequestId) return;
+        backendNoteKey = '';
+        updateBackendNote();
+        showRoutes(databaseRoutes, requestId);
+      } catch (error) {
+        if (requestId !== routeRequestId) return;
+        console.warn(error);
+        backendNoteKey = 'databaseConnectionIssue';
+        updateBackendNote();
+        showEmpty(t('databaseConnectionIssue'), t('databaseRetryMessage'), t('tryAgain'), true, renderRoutes);
+      }
+      return;
+    }
+
     const radiusKm = Number(elements.radius.value);
     const maxDistanceKm = Number(elements.distance.value);
     const maxHours = Number(elements.time.value);
-    const nearbyRoutes = routes
+    const nearbyRoutes = seedRoutes
       .map((route) => ({ route, awayKm: distanceBetween(riderLocation, route.coordinates) }))
       .filter(({ route, awayKm }) => awayKm <= radiusKm && route.distanceKm <= maxDistanceKm && route.durationHours <= maxHours)
       .sort((first, second) => first.awayKm - second.awayKm);
 
-    elements.routeCount.textContent = String(nearbyRoutes.length);
-    elements.routeList.replaceChildren();
-    if (!nearbyRoutes.length) {
-      showEmpty(
-        t('noRoutesTitle'),
-        t('noRoutesMessage'),
-        t('showNearbyRoutes')
-      );
-      elements.routeCount.textContent = '0';
-      return;
-    }
-    nearbyRoutes.forEach(({ route, awayKm }, index) => elements.routeList.append(makeCard(route, index, awayKm)));
+    showRoutes(nearbyRoutes, requestId);
   };
 
   function locate() {
@@ -277,6 +423,100 @@
     );
   }
 
+  const initializeTurnstile = () => {
+    if (!databaseConfigured || !turnstileSiteKey) return;
+
+    const renderWidget = () => {
+      if (!window.turnstile) {
+        setSubmissionStatus('submissionCaptchaError', 'error');
+        return;
+      }
+      turnstileWidgetId = window.turnstile.render(elements.turnstileWidget, {
+        sitekey: turnstileSiteKey,
+        theme: 'light',
+        callback: (token) => {
+          turnstileToken = token;
+          elements.submissionButton.disabled = false;
+          setSubmissionStatus('submissionCaptchaReady');
+        },
+        'expired-callback': () => {
+          turnstileToken = '';
+          elements.submissionButton.disabled = true;
+          setSubmissionStatus('submissionNoCaptcha', 'error');
+        },
+        'error-callback': () => {
+          turnstileToken = '';
+          elements.submissionButton.disabled = true;
+          setSubmissionStatus('submissionCaptchaError', 'error');
+        }
+      });
+    };
+
+    setSubmissionStatus('submissionCaptchaLoading');
+    if (window.turnstile) {
+      renderWidget();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onload = renderWidget;
+    script.onerror = () => setSubmissionStatus('submissionCaptchaError', 'error');
+    document.head.append(script);
+  };
+
+  const submitRouteSuggestion = async (event) => {
+    event.preventDefault();
+    if (!databaseConfigured || !turnstileSiteKey) {
+      setSubmissionStatus('submissionNotConfigured', 'error');
+      return;
+    }
+    if (!turnstileToken) {
+      setSubmissionStatus('submissionNoCaptcha', 'error');
+      return;
+    }
+
+    const formData = new FormData(elements.submissionForm);
+    const stops = String(formData.get('stops') || '').split(/\r?\n/).map((stop) => stop.trim()).filter(Boolean);
+    elements.submissionButton.disabled = true;
+    setSubmissionStatus('submissionSending');
+
+    try {
+      const response = await fetch(`${supabaseUrl}/functions/v1/submit-route`, {
+        method: 'POST',
+        headers: {
+          apikey: supabaseAnonKey,
+          Authorization: `Bearer ${supabaseAnonKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          proposedName: formData.get('proposedName'),
+          startName: formData.get('startName'),
+          stops,
+          distanceKm: Number(formData.get('distanceKm')),
+          durationMinutes: Math.round(Number(formData.get('durationHours')) * 60),
+          recommendationReason: formData.get('recommendationReason'),
+          sourceUrl: formData.get('sourceUrl'),
+          turnstileToken
+        })
+      });
+      if (!response.ok) throw new Error(`Suggestion request failed (${response.status}).`);
+
+      elements.submissionForm.reset();
+      turnstileToken = '';
+      window.turnstile.reset(turnstileWidgetId);
+      setSubmissionStatus('submissionSuccess', 'success');
+    } catch (error) {
+      console.warn(error);
+      turnstileToken = '';
+      elements.submissionButton.disabled = true;
+      if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
+      setSubmissionStatus('submissionFailure', 'error');
+    }
+  };
+
   [elements.radius, elements.distance, elements.time].forEach((slider) => {
     slider.addEventListener('input', () => {
       updateFilterLabels();
@@ -288,7 +528,9 @@
     button.addEventListener('click', () => setLanguage(button.dataset.language));
   });
   document.querySelectorAll('[data-locate]').forEach((button) => button.addEventListener('click', locate));
+  elements.submissionForm.addEventListener('submit', submitRouteSuggestion);
   applyTranslations();
+  initializeTurnstile();
 
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
