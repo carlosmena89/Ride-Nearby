@@ -1,5 +1,9 @@
 # Ride Nearby
 
+![Motorcyclist riding a scenic mountain road](assets/motorcycle-route.jpeg)
+
+*Ride Nearby — discover roads worth taking.*
+
 A lightweight, mobile-first web app for discovering curated motorcycle loops near your current location in Spain. The interface is available in English and Spanish (English by default).
 
 ## What it does
