@@ -1,0 +1,19 @@
+{
+  "name": "Ride Nearby — Curated Motorcycle Routes",
+  "short_name": "Ride Nearby",
+  "description": "Find trusted motorcycle routes near you in Spain.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f3ed",
+  "theme_color": "#f4f3ed",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

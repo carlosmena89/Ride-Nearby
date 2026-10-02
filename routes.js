@@ -1,0 +1,78 @@
+/* Curated route data. Sources are linked on every card; distances and ride times are estimates. */
+window.RIDE_ROUTES = [
+  {
+    id: 'aracena',
+    number: '01',
+    title: 'Sierra de Aracena loop',
+    region: 'HUELVA · ANDALUSIA',
+    start: 'Aracena',
+    coordinates: [37.8938, -6.5612],
+    distanceKm: 95,
+    durationHours: 2.5,
+    difficulty: 'Easy-going',
+    description: 'Green hills, flowing bends and whitewashed villages in the Sierra de Huelva.',
+    stops: ['Aracena', 'Linares de la Sierra', 'Alájar', 'Almonaster la Real', 'Cortegana', 'Jabugo', 'Aracena'],
+    sourceName: 'Motociclismo · Sierra routes',
+    sourceUrl: 'https://www.motociclismo.es/rutas/rutas-moto-sierra-espana_181789_102.html'
+  },
+  {
+    id: 'guadarrama',
+    number: '02',
+    title: 'Guadarrama mountain passes',
+    region: 'MADRID · CENTRAL SPAIN',
+    start: 'Madrid',
+    coordinates: [40.4168, -3.7038],
+    distanceKm: 230,
+    durationHours: 5.5,
+    difficulty: 'Twisty',
+    description: 'A classic pass-hopping loop over Morcuera, Cotos, Navacerrada and Cruz Verde.',
+    stops: ['Madrid', 'Guadalix de la Sierra', 'Miraflores de la Sierra', 'Rascafría', 'Puerto de Cotos', 'Navacerrada', 'Cercedilla', 'Puerto de la Cruz Verde', 'San Lorenzo de El Escorial', 'Madrid'],
+    sourceName: 'Motociclismo · Sierra routes',
+    sourceUrl: 'https://www.motociclismo.es/rutas/rutas-moto-sierra-espana_181789_102.html'
+  },
+  {
+    id: 'grazalema',
+    number: '03',
+    title: 'Sierra de Grazalema loop',
+    region: 'CÁDIZ · ANDALUSIA',
+    start: 'Arcos de la Frontera',
+    coordinates: [36.7484, -5.8078],
+    distanceKm: 115,
+    durationHours: 3,
+    difficulty: 'Twisty',
+    description: 'A mountain-road favourite through Benamahoma, Grazalema and Zahara.',
+    stops: ['Arcos de la Frontera', 'El Bosque', 'Benamahoma', 'Grazalema', 'Zahara de la Sierra', 'Arcos de la Frontera'],
+    sourceName: 'Motociclismo · Sierra routes',
+    sourceUrl: 'https://www.motociclismo.es/rutas/rutas-moto-sierra-espana_181789_102.html'
+  },
+  {
+    id: 'picos',
+    number: '04',
+    title: 'The Picos classic loop',
+    region: 'ASTURIAS · CANTABRIA · LEÓN',
+    start: 'Cangas de Onís',
+    coordinates: [43.3514, -5.1292],
+    distanceKm: 250,
+    durationHours: 6,
+    difficulty: 'Mountain ride',
+    description: 'A big mountain day across three regions, with high passes and wide-open views.',
+    stops: ['Cangas de Onís', 'Potes', 'Puerto de San Glorio', 'Riaño', 'Cangas de Onís'],
+    sourceName: 'RACC · Picos de Europa',
+    sourceUrl: 'https://www.racc.es/blog/moto/picos-de-europa-ruta-en-moto/'
+  },
+  {
+    id: 'montserrat',
+    number: '05',
+    title: 'Montserrat backroads',
+    region: 'BARCELONA · CATALONIA',
+    start: 'Barcelona',
+    coordinates: [41.3874, 2.1686],
+    distanceKm: 125,
+    durationHours: 3,
+    difficulty: 'Easy-going',
+    description: 'A short escape from the city, with a curvy climb and big monastery views.',
+    stops: ['Barcelona', 'Olesa de Montserrat', 'Esparreguera', 'Collbató', 'El Bruc', 'Montserrat', 'Barcelona'],
+    sourceName: 'Motociclismo · Catalonia routes',
+    sourceUrl: 'https://www.motociclismo.es/rutas/rutas-moto-cataluna-nzm_247884_102.html'
+  }
+];
