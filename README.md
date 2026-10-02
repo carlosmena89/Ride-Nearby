@@ -40,6 +40,8 @@ The app runs in demo mode until `supabase-config.js` contains the public Supabas
 5. Copy the project URL, anon key, and Turnstile site key into `supabase-config.js`.
 6. Review pending submissions in Supabase, translate/validate them, then insert approved routes into `motorcycle_routes`.
 
+The complete approval and rejection procedure, including SQL templates, is documented in [`docs/route-moderation.md`](docs/route-moderation.md).
+
 The Google Routes API `TWO_WHEELER` mode remains deliberately unused for Spain: Google’s current official coverage list does not include Spain, and Google requires a beta warning for displayed two-wheeler routes. Google Maps is still used as the hand-off for the final directions.
 
 ## Route data and sources
