@@ -19,11 +19,25 @@ supabase.auth.onAuthStateChange((event, session) => {
   if (event === 'PASSWORD_RECOVERY' && session) showForm();
 });
 
-const { data: { session }, error } = await supabase.auth.getSession();
-if (error || !session) {
-  setMessage('This recovery link is invalid or has expired. Request a new one from Supabase.', 'error');
+const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+const hashAccessToken = hashParams.get('access_token');
+const hashRefreshToken = hashParams.get('refresh_token');
+
+if (hashAccessToken && hashRefreshToken) {
+  const { error } = await supabase.auth.setSession({ access_token: hashAccessToken, refresh_token: hashRefreshToken });
+  if (error) {
+    setMessage('This recovery link is invalid or has expired. Request a new one from Supabase.', 'error');
+  } else {
+    window.history.replaceState({}, document.title, window.location.pathname);
+    showForm();
+  }
 } else {
-  showForm();
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session) {
+    setMessage('This recovery link is invalid or has expired. Request a new one from Supabase.', 'error');
+  } else {
+    showForm();
+  }
 }
 
 form.addEventListener('submit', async (event) => {
