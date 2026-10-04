@@ -46,6 +46,8 @@
           <div><b>RIDE TIME</b><span class="submission-duration"></span></div>
         </div>
         <div class="submission-stops"><b>STOPS</b><span class="submission-stop-list"></span></div>
+        <div class="submission-stops"><b>ROUTE LINK</b><a class="submission-route-link" target="_blank" rel="noopener noreferrer"></a></div>
+        <div class="submission-stops"><b>MAIN ROADS / PASSES</b><span class="submission-roads"></span></div>
         <p class="submission-reason"></p>
         <a class="submission-source" target="_blank" rel="noopener noreferrer"></a>
         <details class="publish-details">
@@ -65,6 +67,7 @@
               <label>English source name<input name="source_name_en" value="Community suggestion"></label>
               <label>Spanish source name<input name="source_name_es" value="Propuesta de la comunidad"></label>
               <label class="wide">Source URL (HTTPS)<input name="source_url" type="url" required></label>
+              <label class="wide">Route URL<input name="route_url" type="url" required></label>
             </div>
             <div class="publish-actions"><button class="reject-button" data-action="reject" type="button">Reject</button><button class="approve-button" data-action="approve" type="submit">Approve and publish</button></div>
             <p class="form-message publish-message" role="status"></p>

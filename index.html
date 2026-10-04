@@ -135,6 +135,14 @@
                   <span data-i18n="formStopsLabel">Stops, in order</span>
                   <textarea name="stops" rows="4" required placeholder="One place per line. Repeat the start at the end for a loop." data-i18n-placeholder="formStopsPlaceholder"></textarea>
                 </label>
+                <label class="form-field form-field-wide">
+                  <span data-i18n="formRouteLinkLabel">Route link</span>
+                  <input name="routeUrl" type="url" maxlength="1000" required placeholder="Google Maps, Kurviger or another route link" data-i18n-placeholder="formRouteLinkPlaceholder">
+                </label>
+                <label class="form-field form-field-wide">
+                  <span data-i18n="formRoadsLabel">Main roads or mountain passes</span>
+                  <input name="mainRoads" type="text" maxlength="500" placeholder="e.g. N-260 · Port del Cantó · Coll de la Creueta" data-i18n-placeholder="formRoadsPlaceholder">
+                </label>
                 <label class="form-field">
                   <span data-i18n="formDistanceLabel">Approx. distance (km)</span>
                   <input name="distanceKm" type="number" min="1" max="2000" step="1" required placeholder="120" data-i18n-placeholder="formDistancePlaceholder">

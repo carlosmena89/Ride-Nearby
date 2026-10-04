@@ -50,6 +50,7 @@
       formNameLabel: 'Route name', formNamePlaceholder: 'e.g. The old mountain road',
       formStartLabel: 'Starting town', formStartPlaceholder: 'e.g. Ronda',
       formStopsLabel: 'Stops, in order', formStopsPlaceholder: 'One place per line. Repeat the start at the end for a loop.',
+      formRouteLinkLabel: 'Route link', formRouteLinkPlaceholder: 'Google Maps, Kurviger or another route link', formRoadsLabel: 'Main roads or mountain passes', formRoadsPlaceholder: 'e.g. N-260 · Port del Cantó · Coll de la Creueta',
       formDistanceLabel: 'Approx. distance (km)', formDistancePlaceholder: '120',
       formDurationLabel: 'Approx. ride time (hours)', formDurationPlaceholder: '3',
       formReasonLabel: 'Why do you recommend it?', formReasonPlaceholder: 'Tell us what makes this ride special…',
@@ -99,6 +100,7 @@
       formNameLabel: 'Nombre de la ruta', formNamePlaceholder: 'p. ej., La carretera antigua de montaña',
       formStartLabel: 'Localidad de salida', formStartPlaceholder: 'p. ej., Ronda',
       formStopsLabel: 'Paradas, en orden', formStopsPlaceholder: 'Una localidad por línea. Repite la salida al final para indicar que es circular.',
+      formRouteLinkLabel: 'Enlace de la ruta', formRouteLinkPlaceholder: 'Google Maps, Kurviger u otro enlace de ruta', formRoadsLabel: 'Carreteras o puertos principales', formRoadsPlaceholder: 'p. ej., N-260 · Port del Cantó · Coll de la Creueta',
       formDistanceLabel: 'Distancia aprox. (km)', formDistancePlaceholder: '120',
       formDurationLabel: 'Duración aprox. (horas)', formDurationPlaceholder: '3',
       formReasonLabel: '¿Por qué la recomiendas?', formReasonPlaceholder: 'Cuéntanos qué tiene de especial esta ruta…',
@@ -504,6 +506,8 @@
           distanceKm: Number(formData.get('distanceKm')),
           durationMinutes: Math.round(Number(formData.get('durationHours')) * 60),
           recommendationReason: formData.get('recommendationReason'),
+          routeUrl: formData.get('routeUrl'),
+          mainRoads: formData.get('mainRoads'),
           sourceUrl: formData.get('sourceUrl'),
           turnstileToken
         })

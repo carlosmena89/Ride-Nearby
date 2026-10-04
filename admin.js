@@ -30,6 +30,10 @@ const renderSubmission = (submission) => {
   card.querySelector('.submission-distance').textContent = `~${submission.distance_km} km`;
   card.querySelector('.submission-duration').textContent = `~${Math.round(Number(submission.duration_minutes) / 60 * 10) / 10} h`;
   card.querySelector('.submission-stop-list').textContent = submission.stops.join('  →  ');
+  const routeLink = card.querySelector('.submission-route-link');
+  routeLink.href = submission.route_url || '#';
+  routeLink.textContent = submission.route_url || 'No route link provided';
+  card.querySelector('.submission-roads').textContent = submission.main_roads || 'Not provided';
   card.querySelector('.submission-reason').textContent = submission.recommendation_reason;
   const source = card.querySelector('.submission-source');
   if (submission.source_url) {
@@ -44,6 +48,7 @@ const renderSubmission = (submission) => {
   form.elements.name_es.value = submission.proposed_name;
   form.elements.slug.value = escapeSlug(submission.proposed_name);
   form.elements.source_url.value = submission.source_url || '';
+  form.elements.route_url.value = submission.route_url || '';
   form.elements.description_en.value = submission.recommendation_reason;
   form.elements.description_es.value = submission.recommendation_reason;
   form.dataset.id = submission.id;
@@ -88,7 +93,8 @@ const moderate = async (event, submissionId, action) => {
       description_es: formValue(form, 'description_es'),
       source_name_en: formValue(form, 'source_name_en'),
       source_name_es: formValue(form, 'source_name_es'),
-      source_url: formValue(form, 'source_url')
+      source_url: formValue(form, 'source_url'),
+      route_url: formValue(form, 'route_url')
     };
     if (!form.reportValidity()) return;
   } else if (!window.confirm('Reject this route suggestion?')) {

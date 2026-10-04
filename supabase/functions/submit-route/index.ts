@@ -41,6 +41,8 @@ Deno.serve(async (request) => {
   const distanceKm = Number(body.distanceKm);
   const durationMinutes = Number(body.durationMinutes);
   const sourceUrl = cleanText(body.sourceUrl, 1000);
+  const routeUrl = cleanText(body.routeUrl, 1000);
+  const mainRoads = cleanText(body.mainRoads, 500);
   const turnstileToken = cleanText(body.turnstileToken, 2048);
 
   if (proposedName.length < 3 || startName.length < 2 || stops.length < 2) {
@@ -54,6 +56,12 @@ Deno.serve(async (request) => {
   }
   if (recommendationReason.length < 20) {
     return jsonResponse({ error: "Tell us a little more about why you recommend this route." }, 400);
+  }
+  if (!routeUrl) return jsonResponse({ error: "Add a link to the route so we can preserve the intended trace." }, 400);
+  try {
+    if (new URL(routeUrl).protocol !== "https:") throw new Error("HTTPS required");
+  } catch {
+    return jsonResponse({ error: "The route link must be a valid HTTPS URL." }, 400);
   }
   if (sourceUrl) {
     try {
@@ -113,6 +121,8 @@ Deno.serve(async (request) => {
     distance_km: distanceKm,
     duration_minutes: durationMinutes,
     recommendation_reason: recommendationReason,
+    route_url: routeUrl,
+    main_roads: mainRoads || null,
     source_url: sourceUrl || null,
     status: "pending",
   });
