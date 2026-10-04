@@ -157,6 +157,20 @@
     return `${wholeHours} ${t('durationHourShort')} ${minutes} ${t('durationMinute')}`;
   };
 
+  const themeForRoute = (routeId) => {
+    const palette = [
+      ['#e5eadb', '#c5d1b8', '#d7e0ce', '#91aa80'],
+      ['#e8e2d3', '#cfc3a8', '#ddd4c1', '#ad9062'],
+      ['#e4e9e0', '#bdceb9', '#d4decf', '#78976e'],
+      ['#e7e4d9', '#c7c4b2', '#dcd9c8', '#9f966e'],
+      ['#e2e9e8', '#b8ced0', '#d1dfdf', '#71999a'],
+      ['#e9e1d8', '#d1bca8', '#dfd0c1', '#aa8063']
+    ];
+    const hash = [...String(routeId || 'route')].reduce((total, character) => total + character.charCodeAt(0), 0);
+    const [sky, back, front, shadow] = palette[hash % palette.length];
+    return { sky, back, front, shadow };
+  };
+
   const distanceBetween = (first, second) => {
     const radians = (degrees) => degrees * Math.PI / 180;
     const [lat1, lon1] = first;
@@ -269,6 +283,12 @@
     card.querySelector('.route-distance').textContent = `~${route.distanceKm} km`;
     card.querySelector('.route-duration').textContent = `~${formatHours(route.durationHours)}`;
     card.querySelector('.route-start').textContent = route.start;
+    const illustration = card.querySelector('.route-illustration');
+    const theme = themeForRoute(route.id);
+    illustration.style.setProperty('--route-sky', theme.sky);
+    illustration.style.setProperty('--route-back', theme.back);
+    illustration.style.setProperty('--route-front', theme.front);
+    illustration.style.setProperty('--route-road-shadow', theme.shadow);
     const source = card.querySelector('.source-link');
     source.href = route.sourceUrl;
     source.setAttribute('aria-label', t('readSourceGuide').replace('{source}', language === 'es' ? route.sourceNameEs : route.sourceName));
