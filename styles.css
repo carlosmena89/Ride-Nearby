@@ -102,10 +102,20 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border: 2px s
 .route-illustration svg { width: 100%; height: 100%; }
 .landscape-back { fill: var(--route-back, #cbd6be); }
 .landscape-front { fill: var(--route-front, #dbe2d2); }
-.illustration-road-shadow { stroke: var(--route-road-shadow, #9eb28b); stroke-width: 9; stroke-linecap: round; }
+.illustration-road-shadow { stroke: var(--route-road-shadow, #9eb28b) !important; stroke-width: 9; stroke-linecap: round; }
 .illustration-road { stroke: #faf9f4; stroke-width: 2; stroke-dasharray: 4 5; stroke-linecap: round; }
 .illustration-dot { fill: var(--green); stroke: #faf9f4; stroke-width: 3; }
 .illustration-dot-end { fill: #91ac73; }
+.scene-mark { position: absolute; top: 15px; right: 44px; display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #ffffff88; border-radius: 50%; color: #ffffffdd; font: 25px/1 var(--display); text-shadow: 0 1px 4px #30443466; }
+.scene-caption { position: absolute; top: 61px; right: 15px; color: #ffffffdd; font: 7px var(--mono); letter-spacing: 1px; text-shadow: 0 1px 4px #30443466; }
+.scene-coast .scene-mark::before { content: '≈'; }
+.scene-vineyard .scene-mark::before { content: '⁙'; }
+.scene-volcano .scene-mark::before { content: '⌃'; }
+.scene-pass .scene-mark::before { content: '⌁'; }
+.scene-island .scene-mark::before { content: '◒'; }
+.scene-river .scene-mark::before { content: '≈'; }
+.scene-city .scene-mark::before { content: '▥'; }
+.scene-forest .scene-mark::before { content: '♣'; }
 .route-number { position: absolute; right: 15px; top: 13px; color: #fff; font: 9px var(--mono); text-shadow: 0 1px 6px #324a36aa; }
 .route-tag { position: absolute; bottom: 10px; left: 12px; padding: 5px 7px; background: #f4f3eddf; color: #426042; font: 7px var(--mono); letter-spacing: .7px; }
 .card-body { padding: 16px 16px 0; }

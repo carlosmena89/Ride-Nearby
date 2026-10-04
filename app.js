@@ -171,6 +171,31 @@
     return { sky, back, front, shadow };
   };
 
+  const sceneForRoute = (routeId) => {
+    const scenes = {
+      'montserrat-backroads': ['scene-pass', 'MOUNTAIN VIEWS', 'VISTAS DE MONTAÑA'],
+      'cabo-de-creus-loop': ['scene-coast', 'COAST ROAD', 'CARRETERA DE COSTA'],
+      'alt-emporda-inland': ['scene-vineyard', 'VINEYARDS', 'VIÑEDOS'],
+      'garrotxa-volcanic-loop': ['scene-volcano', 'VOLCANIC COUNTRY', 'TIERRA VOLCÁNICA'],
+      'priorat-montsant': ['scene-vineyard', 'WINE COUNTRY', 'TIERRA DE VIÑEDOS'],
+      'mont-caro-terres-de-lebre': ['scene-pass', 'MOUNTAIN CLIMB', 'ASCENSO DE MONTAÑA'],
+      'vall-aran-cerdanya': ['scene-pass', 'HIGH PASSES', 'PUERTOS DE MONTAÑA'],
+      'mallorca-tramuntana': ['scene-island', 'ISLAND ROADS', 'CARRETERAS DE ISLA'],
+      'rias-baixas-coast': ['scene-coast', 'ATLANTIC COAST', 'COSTA ATLÁNTICA'],
+      'rias-altas-coast': ['scene-coast', 'CLIFF ROADS', 'CARRETERA DE ACANTILADOS'],
+      'ribeira-sacra': ['scene-river', 'RIVER VALLEYS', 'VALLES DE RÍO'],
+      'miño-to-atlantic': ['scene-river', 'RIVER TO SEA', 'DEL RÍO AL MAR'],
+      'hoces-cabriel-jucar': ['scene-river', 'RIVER GORGES', 'HOCES Y RÍOS'],
+      'sierra-de-cazorla': ['scene-forest', 'FOREST ROADS', 'CARRETERAS DE BOSQUE'],
+      'sierra-de-gata': ['scene-forest', 'QUIET SIERRAS', 'SIERRAS TRANQUILAS'],
+      'sierra-de-aracena': ['scene-forest', 'GREEN HILLS', 'COLINAS VERDES'],
+      'alpujarra-granadina': ['scene-pass', 'SIERRA NEVADA', 'SIERRA NEVADA'],
+      'picos-classic-loop': ['scene-pass', 'HIGH MOUNTAINS', 'ALTA MONTAÑA'],
+      'guadarrama-mountain-passes': ['scene-pass', 'MOUNTAIN PASSES', 'PUERTOS DE MONTAÑA']
+    };
+    return scenes[routeId] || ['scene-pass', 'SCENIC RIDE', 'RUTA PANORÁMICA'];
+  };
+
   const distanceBetween = (first, second) => {
     const radians = (degrees) => degrees * Math.PI / 180;
     const [lat1, lon1] = first;
@@ -285,10 +310,13 @@
     card.querySelector('.route-start').textContent = route.start;
     const illustration = card.querySelector('.route-illustration');
     const theme = themeForRoute(route.id);
+    const scene = sceneForRoute(route.id);
     illustration.style.setProperty('--route-sky', theme.sky);
     illustration.style.setProperty('--route-back', theme.back);
     illustration.style.setProperty('--route-front', theme.front);
     illustration.style.setProperty('--route-road-shadow', theme.shadow);
+    illustration.classList.add(scene[0]);
+    illustration.querySelector('.scene-caption').textContent = language === 'es' ? scene[2] : scene[1];
     const source = card.querySelector('.source-link');
     source.href = route.sourceUrl;
     source.setAttribute('aria-label', t('readSourceGuide').replace('{source}', language === 'es' ? route.sourceNameEs : route.sourceName));
