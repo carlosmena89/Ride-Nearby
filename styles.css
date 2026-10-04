@@ -99,6 +99,31 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border: 2px s
 .route-region { color: #496a49; }
 .route-nearby { color: #898d83; }
 .route-illustration { position: relative; height: 119px; overflow: hidden; background: var(--route-sky, #e7ecdf); }
+.scene-visual { position: absolute; inset: 0; z-index: 0; overflow: hidden; opacity: .92; }
+.scene-visual::before, .scene-visual::after { content: ''; position: absolute; display: block; }
+.scene-visual::before { width: 70px; height: 70px; top: -28px; right: 54px; border-radius: 50%; background: #fff8c888; }
+.scene-visual::after { left: -5%; right: -5%; bottom: 0; height: 35%; background: #8ba98866; }
+.scene-coast .scene-visual { background: linear-gradient(#b9dce4 0 61%, #6fa8aa 62% 100%); }
+.scene-coast .scene-visual::before { width: 32px; height: 32px; top: 13px; right: 28px; background: #f5d986; }
+.scene-coast .scene-visual::after { height: 30%; bottom: 0; background: repeating-radial-gradient(ellipse at 50% 100%, transparent 0 10px, #d5f0e8 11px 13px, transparent 14px 22px); opacity: .9; }
+.scene-volcano .scene-visual { background: linear-gradient(#d9d8c5, #ece4d3); }
+.scene-volcano .scene-visual::before { width: 180px; height: 115px; top: 24px; right: 35px; background: #9d9482; clip-path: polygon(0 100%, 40% 15%, 55% 52%, 68% 27%, 100% 100%); }
+.scene-volcano .scene-visual::after { height: 16%; background: #b9a68a; }
+.scene-vineyard .scene-visual { background: linear-gradient(#e6d9bb 0 55%, #bba16d 56% 100%); }
+.scene-vineyard .scene-visual::before { inset: 54px -35px -32px 35%; width: auto; height: auto; border-radius: 0; background: repeating-linear-gradient(78deg, #758752 0 3px, transparent 4px 17px); transform: perspective(120px) rotateX(25deg); }
+.scene-vineyard .scene-visual::after { width: 120px; height: 85px; top: 20px; left: 15px; background: #b1b898; clip-path: polygon(0 100%, 45% 12%, 100% 100%); }
+.scene-forest .scene-visual { background: linear-gradient(#d4dfd3, #b4c9ad); }
+.scene-forest .scene-visual::before { inset: 18px 15px 14px 20px; width: auto; height: auto; border-radius: 0; background: repeating-linear-gradient(120deg, transparent 0 20px, #557b5d 21px 28px, transparent 29px 47px); clip-path: polygon(0 100%, 8% 45%, 16% 100%, 29% 23%, 42% 100%, 57% 37%, 69% 100%, 83% 17%, 100% 100%); }
+.scene-forest .scene-visual::after { height: 22%; background: #6c8d66; }
+.scene-river .scene-visual { background: linear-gradient(145deg, #dce3d0 0 50%, #aac7bf 51% 100%); }
+.scene-river .scene-visual::before { width: 110%; height: 30px; top: 55px; left: -5%; border-radius: 50%; background: #6fa6a5; transform: rotate(-8deg); box-shadow: 0 8px 0 #c9e1d677, 0 -8px 0 #c9e1d677; }
+.scene-river .scene-visual::after { height: 20%; background: #7d9b78; }
+.scene-island .scene-visual { background: linear-gradient(#b9dce5 0 58%, #62a9aa 59% 100%); }
+.scene-island .scene-visual::before { width: 110px; height: 72px; top: 42px; left: 24px; background: #8fae84; clip-path: polygon(0 100%, 48% 20%, 100% 100%); }
+.scene-island .scene-visual::after { width: 55px; height: 55px; top: 12px; right: 35px; border-radius: 50%; background: #f4d27c; }
+.scene-pass .scene-visual { background: linear-gradient(#dfe4dc, #c9d5c6); }
+.scene-pass .scene-visual::before { width: 210px; height: 105px; top: 20px; right: -10px; background: #839e83; clip-path: polygon(0 100%, 24% 45%, 40% 65%, 63% 8%, 82% 55%, 100% 25%, 100% 100%); }
+.scene-pass .scene-visual::after { height: 18%; background: #78936f; }
 .route-illustration svg { width: 100%; height: 100%; }
 .landscape-back { fill: var(--route-back, #cbd6be); }
 .landscape-front { fill: var(--route-front, #dbe2d2); }

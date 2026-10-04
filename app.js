@@ -193,7 +193,15 @@
       'picos-classic-loop': ['scene-pass', 'HIGH MOUNTAINS', 'ALTA MONTAÑA'],
       'guadarrama-mountain-passes': ['scene-pass', 'MOUNTAIN PASSES', 'PUERTOS DE MONTAÑA']
     };
-    return scenes[routeId] || ['scene-pass', 'SCENIC RIDE', 'RUTA PANORÁMICA'];
+    if (scenes[routeId]) return scenes[routeId];
+    const normalized = String(routeId || '').toLowerCase();
+    if (/coast|costa|coastal|mar|sea|rias|atlantic|atlántic|creus/.test(normalized)) return ['scene-coast', 'COAST ROAD', 'CARRETERA DE COSTA'];
+    if (/vine|vin|wine|viñ|priorat|emporda|empordà/.test(normalized)) return ['scene-vineyard', 'WINE COUNTRY', 'TIERRA DE VIÑEDOS'];
+    if (/volcan|volcán|garrotxa/.test(normalized)) return ['scene-volcano', 'VOLCANIC COUNTRY', 'TIERRA VOLCÁNICA'];
+    if (/river|rio|río|ribeira|jucar|júcar|cabriel|miño|minho/.test(normalized)) return ['scene-river', 'RIVER VALLEYS', 'VALLES DE RÍO'];
+    if (/forest|bosque|sierra|gata|cazorla|aracena/.test(normalized)) return ['scene-forest', 'GREEN SIERRAS', 'SIERRAS VERDES'];
+    if (/island|isla|mallorca|menorca|ibiza|canaria/.test(normalized)) return ['scene-island', 'ISLAND ROADS', 'CARRETERAS DE ISLA'];
+    return ['scene-pass', 'SCENIC RIDE', 'RUTA PANORÁMICA'];
   };
 
   const distanceBetween = (first, second) => {
